@@ -3,11 +3,40 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,400;0,700;1,100&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="./assets/css/reset.css" />
     <link rel="stylesheet" href="./assets/css/sytles.css" />
     <title>BuzzQuizz</title>
   </head>
   <body>
+    <!-- -------------------------------LOGIN SCREEN-------------------------------- -->
+    <section class="login-screen">
+      <h1>BuzzQuizz</h1>
+      <h3>O Quiz que você Quizzer</h3>
+      <div class="login-container">
+        <input type="email" name="email" id="" placeholder="E-mail" />
+        <input type="password" name="password" id="" placeholder="Senha" />
+        <button disabled>Entrar</button>
+      </div>
+    </section>
+    <main class="display-none">
+      <header class="main-header"></header>
+      <!-- -------------------------------QUIZZES SCREEN-------------------------------- -->
+      <section class="quizzes-screen"></section>
+      <!-- -------------------------------CREATE QUIZZ SCREEN-------------------------------- -->
+      <section class="create-quizz-screen"></section>
+      <!-- -------------------------------SINGLE QUIZZ  SCREEN-------------------------------- -->
+      <section class="single-quizz-screen"></section>
+      <!-- -------------------------------END GAME SCREEN-------------------------------- -->
+      <section class="end-game-screen"></section>
+    </main>
     <script src="./index.js"></script>
   </body>
 </html>
