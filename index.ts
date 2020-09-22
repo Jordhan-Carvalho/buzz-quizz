@@ -185,7 +185,7 @@ async function sendToServer() {
     renderFromCreateToQuizzes();
   } catch (e) {
     console.error(e);
-    alert("Algum erro ocorreu, verifique os campos");
+    alert("Preencha todos os campos");
     toggleIsLoadingQuizz();
   }
 }
@@ -213,6 +213,13 @@ function renderFromCreateToQuizzes() {
   quizzesScreen?.classList.toggle("display-none");
 }
 
+function renderFromQuizzesToCreate() {
+  renderCreateQuestion();
+  renderCreateLevels();
+  createQuizzScreen?.classList.toggle("display-none");
+  quizzesScreen?.classList.toggle("display-none");
+}
+
 function toggleIsLoading() {
   loadingGif?.classList.toggle("display-none");
   loginButton?.classList.toggle("display-none");
@@ -225,11 +232,11 @@ function toggleIsLoadingQuizz() {
 
 async function renderQuizzes() {
   await fetchQuizzes();
-
   for (let quizz of quizzes) {
     let html = `<p>${quizz.title}</h3>`;
     let quizzDiv = document.createElement("div");
     quizzDiv.setAttribute("class", "box-container");
+    quizzDiv.setAttribute("onclick", "renderQuizz()");
     quizzDiv.innerHTML = html;
     quizzesScreen?.insertAdjacentElement("beforeend", quizzDiv);
   }
@@ -275,4 +282,8 @@ function renderCreateLevels() {
 `;
   levelNode.push(levelDiv);
   levelsContainer.appendChild(levelDiv);
+}
+
+function renderQuizz() {
+  //renderizar a tela do quizz;
 }
