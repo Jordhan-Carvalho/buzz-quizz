@@ -141,3 +141,11 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+textarea,
+input,
+button,
+select {
+  font-family: inherit;
+  font-size: inherit;
+}
