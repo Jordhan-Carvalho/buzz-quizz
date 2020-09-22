@@ -47,6 +47,7 @@ const loadingGifQuizz = document.querySelector(".loading-gif-quizz");
 const loginButton = document.querySelector(".login-button");
 
 const mainContainerScreen = document.querySelector("main");
+
 const quizzesScreen = document.querySelector(".quizzes-screen");
 
 const createQuizzScreen = document.querySelector(".create-quizz-screen");
@@ -192,7 +193,7 @@ async function sendToServer() {
 // --------------------------------RENDER FUNCTION----------------------------------
 
 function renderFromLoginToQuizzes() {
-  fetchQuizzes();
+  renderQuizzes();
   loginScreen?.classList.add("display-none");
   mainContainerScreen?.classList.remove("display-none");
   quizzesScreen?.classList.remove("display-none");
@@ -207,6 +208,7 @@ function renderProvisorio() {
 }
 
 function renderFromCreateToQuizzes() {
+  renderQuizzes();
   createQuizzScreen?.classList.toggle("display-none");
   quizzesScreen?.classList.toggle("display-none");
 }
@@ -223,6 +225,14 @@ function toggleIsLoadingQuizz() {
 
 async function renderQuizzes() {
   await fetchQuizzes();
+
+  for (let quizz of quizzes) {
+    let html = `<p>${quizz.title}</h3>`;
+    let quizzDiv = document.createElement("div");
+    quizzDiv.setAttribute("class", "box-container");
+    quizzDiv.innerHTML = html;
+    quizzesScreen?.insertAdjacentElement("beforeend", quizzDiv);
+  }
 }
 
 function renderCreateQuestion() {

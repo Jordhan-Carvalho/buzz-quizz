@@ -213,7 +213,7 @@ function sendToServer() {
 }
 // --------------------------------RENDER FUNCTION----------------------------------
 function renderFromLoginToQuizzes() {
-    fetchQuizzes();
+    renderQuizzes();
     loginScreen === null || loginScreen === void 0 ? void 0 : loginScreen.classList.add("display-none");
     mainContainerScreen === null || mainContainerScreen === void 0 ? void 0 : mainContainerScreen.classList.remove("display-none");
     quizzesScreen === null || quizzesScreen === void 0 ? void 0 : quizzesScreen.classList.remove("display-none");
@@ -226,6 +226,7 @@ function renderProvisorio() {
     renderCreateLevels();
 }
 function renderFromCreateToQuizzes() {
+    renderQuizzes();
     createQuizzScreen === null || createQuizzScreen === void 0 ? void 0 : createQuizzScreen.classList.toggle("display-none");
     quizzesScreen === null || quizzesScreen === void 0 ? void 0 : quizzesScreen.classList.toggle("display-none");
 }
@@ -239,11 +240,20 @@ function toggleIsLoadingQuizz() {
 }
 function renderQuizzes() {
     return __awaiter(this, void 0, void 0, function () {
+        var _i, quizzes_1, quizz, html, quizzDiv;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, fetchQuizzes()];
                 case 1:
                     _a.sent();
+                    for (_i = 0, quizzes_1 = quizzes; _i < quizzes_1.length; _i++) {
+                        quizz = quizzes_1[_i];
+                        html = "<p>" + quizz.title + "</h3>";
+                        quizzDiv = document.createElement("div");
+                        quizzDiv.setAttribute("class", "box-container");
+                        quizzDiv.innerHTML = html;
+                        quizzesScreen === null || quizzesScreen === void 0 ? void 0 : quizzesScreen.insertAdjacentElement("beforeend", quizzDiv);
+                    }
                     return [2 /*return*/];
             }
         });

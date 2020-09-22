@@ -21,11 +21,21 @@
       <h1>BuzzQuizz</h1>
       <h3>O Quiz que você Quizzer</h3>
       <div class="login-container">
-        <input class="email-input" type="email" name="email" placeholder="E-mail" />
-        <input class="password-input"  type="password" name="password" placeholder="Senha" />
+        <input
+          class="email-input"
+          type="email"
+          name="email"
+          placeholder="E-mail"
+        />
+        <input
+          class="password-input"
+          type="password"
+          name="password"
+          placeholder="Senha"
+        />
         <button class="login-button" onclick="login()">Entrar</button>
         <div class="loading-gif display-none">
-          <img src="./assets/images/loadingBtn.gif" alt="" >
+          <img src="./assets/images/loadingBtn.gif" alt="" />
         </div>
       </div>
     </section>
@@ -39,34 +49,32 @@
           <h3>Novo Quizz</h3>
           <ion-icon name="add-circle"></ion-icon>
         </div>
-        <div class="box-container">
-          <p>O quão Potterhead você é?</h3>
-        </div>
-        <div class="box-container">
-          <p>O quão Potterhead você é?</h3>
-        </div>        <div class="box-container">
-          <p>O quão Potterhead você é?</h3>
-        </div>        <div class="box-container">
-          <p>O quão Potterhead você é?</h3>
-        </div>        <div class="box-container">
-          <p>O quão Potterhead você é?</h3>
-        </div>        <div class="box-container">
-          <p>O quão Potterhead você é?</h3>
-        </div>
       </section>
       <!-- -------------------------------CREATE QUIZZ SCREEN-------------------------------- -->
       <section class="create-quizz-screen display-none">
-        <input class="quizz-title-input" type="text" id="quizz-title" placeholder="Digite o título do seu quizz">
-        <div class="questions-container">
-        </div>
-        <ion-icon class="add-question" onclick="addQuestion()" name="add-circle"></ion-icon>
-        <div class="levels-container">
-
-        </div>
-        <ion-icon class="add-level" onclick="addLevel()" name="add-circle"></ion-icon>
-        <button onclick="createQuizz()" class="post-quizz-button">PUBLICAR</button>
+        <input
+          class="quizz-title-input"
+          type="text"
+          id="quizz-title"
+          placeholder="Digite o título do seu quizz"
+        />
+        <div class="questions-container"></div>
+        <ion-icon
+          class="add-question"
+          onclick="addQuestion()"
+          name="add-circle"
+        ></ion-icon>
+        <div class="levels-container"></div>
+        <ion-icon
+          class="add-level"
+          onclick="addLevel()"
+          name="add-circle"
+        ></ion-icon>
+        <button onclick="createQuizz()" class="post-quizz-button">
+          PUBLICAR
+        </button>
         <div class="loading-gif-quizz display-none">
-          <img src="./assets/images/loadingBtn.gif" alt="" >
+          <img src="./assets/images/loadingBtn.gif" alt="" />
         </div>
       </section>
       <!-- -------------------------------SINGLE QUIZZ  SCREEN-------------------------------- -->
@@ -78,7 +86,10 @@
         <div class="answers-container">
           <div class="single-answer-container">
             <figure class="answer-image-container">
-              <img src="https://pfarma.com.br/images/noticias/gato-coronavirus.jpg" alt="">
+              <img
+                src="https://pfarma.com.br/images/noticias/gato-coronavirus.jpg"
+                alt=""
+              />
             </figure>
             <div class="border-container">
               <p>Gato</p>
@@ -86,7 +97,10 @@
           </div>
           <div class="single-answer-container">
             <figure class="answer-image-container">
-              <img src="https://i.pinimg.com/originals/20/5c/23/205c237c7d1dd989e51a6b6373c5b6ec.png" alt="">
+              <img
+                src="https://i.pinimg.com/originals/20/5c/23/205c237c7d1dd989e51a6b6373c5b6ec.png"
+                alt=""
+              />
             </figure>
             <div class="border-container">
               <p>Rato</p>
@@ -94,7 +108,10 @@
           </div>
           <div class="single-answer-container">
             <figure class="answer-image-container">
-              <img src="https://ciencianarua.net/wp-content/uploads/2020/03/Cururu3-1024x670.jpg" alt="">
+              <img
+                src="https://ciencianarua.net/wp-content/uploads/2020/03/Cururu3-1024x670.jpg"
+                alt=""
+              />
             </figure>
             <div class="border-container">
               <p>Sapo</p>
@@ -102,7 +119,10 @@
           </div>
           <div class="single-answer-container">
             <figure class="answer-image-container">
-              <img src="https://lh3.googleusercontent.com/proxy/vgrCZUlbsC_CTAgVfMfVUgTwZPDRHuus1IhUjStrDH6RXXbAF4-_GkFBwcmR7FXbMJG6okEXJe3efMZHBb3pFOG608g9BDhjKjfsOw_nioqyut7wNyfUr4GIeEMW-_c" alt="">
+              <img
+                src="https://lh3.googleusercontent.com/proxy/vgrCZUlbsC_CTAgVfMfVUgTwZPDRHuus1IhUjStrDH6RXXbAF4-_GkFBwcmR7FXbMJG6okEXJe3efMZHBb3pFOG608g9BDhjKjfsOw_nioqyut7wNyfUr4GIeEMW-_c"
+                alt=""
+              />
             </figure>
             <div class="border-container">
               <p>Furao</p>
@@ -119,10 +139,18 @@
         <div class="result-container">
           <div class="result-text-container">
             <h3>Voce eh praticamente um aluno de Hogwarst!</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus, qui! Doloremque, id? Nam perspiciatis suscipit laboriosam sapiente eligendi obcaecati placeat minus, magni fuga omnis tempore incidunt ratione, mollitia rem facere?</p>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Repellendus, qui! Doloremque, id? Nam perspiciatis suscipit
+              laboriosam sapiente eligendi obcaecati placeat minus, magni fuga
+              omnis tempore incidunt ratione, mollitia rem facere?
+            </p>
           </div>
           <figure class="result-image-container">
-            <img src="https://i.pinimg.com/564x/41/2d/83/412d83a778c691059de368b047c2a52f.jpg" alt="">
+            <img
+              src="https://i.pinimg.com/564x/41/2d/83/412d83a778c691059de368b047c2a52f.jpg"
+              alt=""
+            />
           </figure>
         </div>
       </section>
