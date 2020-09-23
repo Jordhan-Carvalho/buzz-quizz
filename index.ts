@@ -28,13 +28,16 @@ interface Answer {
 let token = "";
 let quizzes: Quizz[] = [];
 
+// ----create quizz stats---
 let questions: Question[] = [];
 let numberOfQuestions = 1;
 let questionNode: HTMLElement[] = [];
-
 let levels: Level[] = [];
 let numberOfLevels = 1;
 let levelNode: HTMLElement[] = [];
+// ----single quizz stats----
+let currentQuestion = 1;
+let acertos = 0;
 
 // ----------------------------------NODE && NODE LIST------------------------------
 const loginScreen = document.querySelector(".login-screen");
@@ -49,6 +52,12 @@ const loginButton = document.querySelector(".login-button");
 const mainContainerScreen = document.querySelector("main");
 
 const quizzesScreen = document.querySelector(".quizzes-screen") as HTMLElement;
+
+const endGameScreen = document.querySelector(".end-game-screen");
+
+const singleQuizzScreen = document.querySelector(
+  ".single-quizz-screen"
+) as HTMLElement;
 
 const createQuizzScreen = document.querySelector(".create-quizz-screen");
 const quizzTitle = document.querySelector("#quizz-title") as HTMLInputElement;
@@ -99,11 +108,11 @@ async function fetchQuizzes() {
         },
       }
     );
+    console.log(resp.data);
     quizzes = [];
     for (let quizz of resp.data) {
       quizzes.push({ title: quizz.title, data: quizz.data });
     }
-    console.log(quizzes);
   } catch (e) {
     console.error(e);
   }
@@ -130,7 +139,6 @@ function addLevel() {
 }
 
 function checkQuestionMark(question: string): boolean {
-  // Verificando se tem ? no final, se nao tiver ja era
   if (
     question.charAt(question.length - 1) !== "?" ||
     question.indexOf("?") !== question.length - 1
@@ -144,6 +152,7 @@ function checkQuestionMark(question: string): boolean {
 }
 
 function getAllQuestions(): boolean {
+  questions = [];
   for (let question of questionNode) {
     let newQuestion: Question;
     let answers: Answer[] = [];
@@ -209,6 +218,44 @@ async function sendToServer() {
   }
 }
 
+// ---------------------------------SINGLE QUIZZ SCREEN--------------------------------------
+
+function selectAnswer(answer: HTMLElement, singleQuizz: Quizz) {
+  changeAnswers("background");
+  currentQuestion++;
+  if (answer.hasAttribute("correct")) acertos++;
+  console.log(`acertos ${acertos} e currentQuestion ${currentQuestion}`);
+  // remove o eventListners de todas botoes
+  changeAnswers("removeClick");
+  console.log(singleQuizz.data.questions.length);
+  const endGame = singleQuizz.data.questions.length < currentQuestion;
+  if (endGame) {
+    setTimeout(function () {
+      renderFromQuizzToEndGame();
+    }, 2000);
+  } else {
+    setTimeout(function () {
+      renderSingleQuestion(singleQuizz);
+    }, 2000);
+  }
+}
+
+function changeAnswers(whatToChange: string) {
+  const answersNode = singleQuizzScreen?.querySelectorAll(
+    ".single-answer-container"
+  ) as NodeListOf<Element>;
+  for (let answer of answersNode) {
+    if (whatToChange === "background") {
+      answer.hasAttribute("correct")
+        ? answer.classList.toggle("correct")
+        : answer.classList.toggle("wrong");
+    } else if (whatToChange === "removeClick") {
+      // @ts-ignore
+      // removeEventListener("click", teste);
+    }
+  }
+}
+
 // --------------------------------RENDER FUNCTION----------------------------------
 
 function renderFromLoginToQuizzes() {
@@ -239,6 +286,17 @@ function renderFromQuizzesToCreate() {
   quizzesScreen?.classList.toggle("display-none");
 }
 
+function renderFromQuizzesToQuizz(quizz: Quizz) {
+  renderSingleQuestion(quizz);
+  quizzesScreen?.classList.toggle("display-none");
+  singleQuizzScreen?.classList.toggle("display-none");
+}
+
+function renderFromQuizzToEndGame() {
+  singleQuizzScreen?.classList.toggle("display-none");
+  endGameScreen?.classList.toggle("display-none");
+}
+
 function toggleIsLoading() {
   loadingGif?.classList.toggle("display-none");
   loginButton?.classList.toggle("display-none");
@@ -261,7 +319,7 @@ async function renderQuizzes() {
     let html = `<p>${quizz.title}</h3>`;
     let quizzDiv = document.createElement("div");
     quizzDiv.setAttribute("class", "box-container");
-    quizzDiv.setAttribute("onclick", "renderQuizz()");
+    quizzDiv.addEventListener("click", () => renderFromQuizzesToQuizz(quizz));
     quizzDiv.innerHTML = html;
     quizzesScreen?.insertAdjacentElement("beforeend", quizzDiv);
   }
@@ -290,6 +348,7 @@ function renderCreateQuestion() {
     </div>`;
   questionNode.push(questionDiv);
   questionsContainer.appendChild(questionDiv);
+  console.log(`questionNode ${questionNode.length}`);
 }
 
 function renderCreateLevels() {
@@ -309,8 +368,46 @@ function renderCreateLevels() {
   levelsContainer.appendChild(levelDiv);
 }
 
-function renderQuizz() {
-  //renderizar a tela do quizz;
+function renderSingleQuestion(singleQuizz: Quizz) {
+  singleQuizzScreen.innerHTML = "";
+  const answersArray = singleQuizz.data.questions[
+    currentQuestion - 1
+  ].answers.sort(() => Math.random() - 0.5);
+
+  let headerHtml = ` <h1>${singleQuizz.title}</h1>
+  <header class="question-header">
+    <h3>${currentQuestion}. ${
+    singleQuizz.data.questions[currentQuestion - 1].questionTitle
+  }</h3>
+  </header> `;
+  let answersContainer = document.createElement("div");
+  answersContainer.setAttribute("class", "answers-container");
+  for (let i = 0; i < 4; i++) {
+    answersContainer.innerHTML += `<div class="single-answer-container"  ${
+      answersArray[i].correct ? "correct" : ""
+    }>
+    <figure class="answer-image-container">
+      <img
+        src="${answersArray[i].answerUrl}"
+        alt="resposta quizz"
+      />
+    </figure>
+    <div class="border-container">
+      <p>${answersArray[i].answer}</p>
+    </div>
+  </div>`;
+  }
+  for (let i = 1; i <= 4; i++) {
+    let singleAnswerContainer = answersContainer.querySelector(
+      `.single-answer-container:nth-child(${i})`
+    );
+    singleAnswerContainer?.addEventListener("click", function () {
+      //@ts-ignore
+      selectAnswer(this, singleQuizz);
+    });
+  }
+  singleQuizzScreen?.insertAdjacentHTML("afterbegin", headerHtml);
+  singleQuizzScreen?.insertAdjacentElement("beforeend", answersContainer);
 }
 
 // -------------------------------------HELPER FUNCTIONS----------------------------------------

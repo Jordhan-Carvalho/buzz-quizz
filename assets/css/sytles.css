@@ -336,3 +336,11 @@ main {
 .display-none {
   display: none;
 }
+
+.correct {
+  background: var(--greenLight);
+}
+
+.wrong {
+  background: var(--redLight);
+}
