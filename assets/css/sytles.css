@@ -269,6 +269,7 @@ main {
 } */
 
 .answers-container {
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 215px 215px;
@@ -314,6 +315,7 @@ main {
 .result-container {
   display: flex;
   justify-content: space-between;
+  width: 100%;
 }
 
 .result-text-container {
