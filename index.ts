@@ -48,7 +48,7 @@ const loginButton = document.querySelector(".login-button");
 
 const mainContainerScreen = document.querySelector("main");
 
-const quizzesScreen = document.querySelector(".quizzes-screen");
+const quizzesScreen = document.querySelector(".quizzes-screen") as HTMLElement;
 
 const createQuizzScreen = document.querySelector(".create-quizz-screen");
 const quizzTitle = document.querySelector("#quizz-title") as HTMLInputElement;
@@ -63,7 +63,10 @@ const levelsContainer = document.querySelector(
 
 // --------------------------------LOGIN SCREEN------------------------------------
 async function login() {
-  const data = { email: emailInput.value, password: passwordInput.value };
+  const data = {
+    email: emailInput.value.trim(),
+    password: passwordInput.value.trim(),
+  };
   if (data.email === "" || data.password === "") {
     alert("Preencher todos os campos");
     return;
@@ -76,7 +79,6 @@ async function login() {
       data
     );
     token = resp.data.token;
-    fetchQuizzes();
     renderFromLoginToQuizzes();
   } catch (e) {
     alert("Email ou senha incorretos");
@@ -110,6 +112,7 @@ async function fetchQuizzes() {
 // ---------------------------------CREATE QUIZZ SCREEN---------------------------------------
 
 function createQuizz() {
+  if (!getAllQuestions()) return;
   getAllQuestions();
   getAllLevels();
   // validar
@@ -126,44 +129,60 @@ function addLevel() {
   renderCreateLevels();
 }
 
-function getAllQuestions() {
+function checkQuestionMark(question: string): boolean {
+  // Verificando se tem ? no final, se nao tiver ja era
+  if (
+    question.charAt(question.length - 1) !== "?" ||
+    question.indexOf("?") !== question.length - 1
+  ) {
+    alert(
+      "É obrigatorio terminar a pergunta com '?', e só se pode ter 1 pergunta por bloco de perguntas."
+    );
+    return false;
+  }
+  return true;
+}
+
+function getAllQuestions(): boolean {
   for (let question of questionNode) {
     let newQuestion: Question;
     let answers: Answer[] = [];
-    let questionTitle = question.children[1].value;
+    let questionTitle = firstLetterUpperCase(question.children[1].value.trim());
+    if (!checkQuestionMark(questionTitle)) return false;
     // Pegar todas respostas e colcoar num array
     for (let i = 2; i <= 5; i++) {
       answers.push({
-        answer: question.children[i].children[0].value,
-        answerUrl: question.children[i].children[1].value,
+        answer: firstLetterUpperCase(
+          question.children[i].children[0].value.trim()
+        ),
+        answerUrl: question.children[i].children[1].value.trim(),
         correct: i === 2 ? true : false,
       });
     }
     newQuestion = { questionTitle, answers };
-    console.log(newQuestion);
     questions.push(newQuestion);
   }
+  return true;
 }
 
 function getAllLevels() {
   for (let level of levelNode) {
     let newLevel: Level;
     let range = {
-      minRange: Number(level.children[1].children[0].value),
-      maxRange: Number(level.children[1].children[1].value),
+      minRange: Number(level.children[1].children[0].value.trim()),
+      maxRange: Number(level.children[1].children[1].value.trim()),
     };
-    let title = level.children[2].value;
-    let imageUrl = level.children[3].value;
-    let description = level.children[4].value;
+    let title = firstLetterUpperCase(level.children[2].value.trim());
+    let imageUrl = level.children[3].value.trim();
+    let description = firstLetterUpperCase(level.children[4].value.trim());
     newLevel = { title, range, description, imageUrl };
-    console.log(newLevel);
     levels.push(newLevel);
   }
 }
 
 async function sendToServer() {
   const quizzData: Quizz = {
-    title: quizzTitle.value,
+    title: firstLetterUpperCase(quizzTitle.value.trim()),
     data: {
       levels,
       questions,
@@ -172,7 +191,7 @@ async function sendToServer() {
   try {
     toggleIsLoadingQuizz();
     //@ts-ignore
-    const resp = await axios.post(
+    await axios.post(
       "https://mock-api.bootcamp.respondeai.com.br/api/v1/buzzquizz/quizzes",
       quizzData,
       {
@@ -181,7 +200,7 @@ async function sendToServer() {
         },
       }
     );
-    console.log(resp);
+    console.log("enviado");
     renderFromCreateToQuizzes();
   } catch (e) {
     console.error(e);
@@ -232,6 +251,12 @@ function toggleIsLoadingQuizz() {
 
 async function renderQuizzes() {
   await fetchQuizzes();
+  quizzesScreen.innerHTML = "";
+  let newQuizzDiv = `<div class="box-container new-quizz-container" onclick="renderFromQuizzesToCreate()">
+                        <h3>Novo Quizz</h3>
+                        <ion-icon name="add-circle"></ion-icon>
+                      </div>`;
+  quizzesScreen?.insertAdjacentHTML("beforeend", newQuizzDiv);
   for (let quizz of quizzes) {
     let html = `<p>${quizz.title}</h3>`;
     let quizzDiv = document.createElement("div");
@@ -286,4 +311,10 @@ function renderCreateLevels() {
 
 function renderQuizz() {
   //renderizar a tela do quizz;
+}
+
+// -------------------------------------HELPER FUNCTIONS----------------------------------------
+
+function firstLetterUpperCase(string: string): string {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
