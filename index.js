@@ -496,6 +496,9 @@ function renderCreateQuestion(singleQuestion, i, isEdit) {
     questionDiv.innerHTML = "<h3>Pergunta " + numberOfQuestions + "</h3>\n    <input class=\"question-input\" type=\"text\" placeholder=\"Digite a pergunta\" value=\"" + (isEdit ? singleQuestion === null || singleQuestion === void 0 ? void 0 : singleQuestion.questionTitle : "") + "\" >\n    <div class=\"answer-input-container correct-answer\">\n      <input type=\"text\" placeholder=\"Digite a resposta correta\" value=\"" + (isEdit ? singleQuestion === null || singleQuestion === void 0 ? void 0 : singleQuestion.answers[0].answer : "") + "\">\n      <input type=\"text\" placeholder=\"Link para imagem correta\" value=\"" + (isEdit ? singleQuestion === null || singleQuestion === void 0 ? void 0 : singleQuestion.answers[0].answerUrl : "") + "\">\n    </div>\n    <div class=\"answer-input-container wrong-answer\">\n      <input type=\"text\" placeholder=\"Digite a resposta errada 1\" value=\"" + (isEdit ? singleQuestion === null || singleQuestion === void 0 ? void 0 : singleQuestion.answers[1].answer : "") + "\">\n      <input type=\"text\" placeholder=\"Link para imagem errada 1\" value=\"" + (isEdit ? singleQuestion === null || singleQuestion === void 0 ? void 0 : singleQuestion.answers[1].answerUrl : "") + "\">\n    </div>\n    <div class=\"answer-input-container wrong-answer\">\n      <input type=\"text\" placeholder=\"Digite a resposta errada 2\" value=\"" + (isEdit ? singleQuestion === null || singleQuestion === void 0 ? void 0 : singleQuestion.answers[2].answer : "") + "\">\n      <input type=\"text\" placeholder=\"Link para imagem errada 2\" value=\"" + (isEdit ? singleQuestion === null || singleQuestion === void 0 ? void 0 : singleQuestion.answers[2].answerUrl : "") + "\">\n    </div>\n    <div class=\"answer-input-container wrong-answer\">\n      <input type=\"text\" placeholder=\"Digite a resposta errada 3\" value=\"" + (isEdit ? singleQuestion === null || singleQuestion === void 0 ? void 0 : singleQuestion.answers[3].answer : "") + "\">\n      <input type=\"text\" placeholder=\"Link para imagem errada 3\" value=\"" + (isEdit ? singleQuestion === null || singleQuestion === void 0 ? void 0 : singleQuestion.answers[3].answerUrl : "") + "\">\n    </div>";
     questionNode.push(questionDiv);
     questionsContainer.appendChild(questionDiv);
+    setTimeout(function () {
+        questionDiv.classList.add("display-visible");
+    }, 0);
     console.log("questionNode " + questionNode.length);
 }
 function renderCreateLevels(singleLevel, i, isEdit) {
@@ -507,6 +510,9 @@ function renderCreateLevels(singleLevel, i, isEdit) {
     levelDiv.innerHTML = "\n  <h3>N\u00EDvel " + numberOfLevels + "</h3>\n  <div class=\"answer-input-container\">\n    <input type=\"text\" placeholder=\"% Minima de Acerto do n\u00EDvel\" value=\"" + (isEdit ? singleLevel === null || singleLevel === void 0 ? void 0 : singleLevel.range.minRange : "") + "\">\n    <input type=\"text\"  placeholder=\"% M\u00E1xima de Acerto do n\u00EDvel\" value=\"" + (isEdit ? singleLevel === null || singleLevel === void 0 ? void 0 : singleLevel.range.maxRange : "") + "\">\n  </div>\n    <input class=\"question-input\" type=\"text\"  placeholder=\"T\u00EDtulo do n\u00EDvel\" value=\"" + (isEdit ? singleLevel === null || singleLevel === void 0 ? void 0 : singleLevel.title : "") + "\">\n    <input class=\"question-input\" type=\"text\"  placeholder=\"Link da imagem do n\u00EDvel\" value=\"" + (isEdit ? singleLevel === null || singleLevel === void 0 ? void 0 : singleLevel.imageUrl : "") + "\">\n    <textarea class=\"question-input level-desc\"  rows=\"4\" placeholder=\"Descri\u00E7\u00E3o do N\u00EDvel\">" + (isEdit ? singleLevel === null || singleLevel === void 0 ? void 0 : singleLevel.description : "") + "</textarea>\n";
     levelNode.push(levelDiv);
     levelsContainer.appendChild(levelDiv);
+    setTimeout(function () {
+        levelDiv.classList.add("display-visible");
+    }, 0);
 }
 function renderSingleQuestion(singleQuizz) {
     singleQuizzScreen.innerHTML = "";
@@ -526,6 +532,9 @@ function renderSingleQuestion(singleQuizz) {
     }
     singleQuizzScreen === null || singleQuizzScreen === void 0 ? void 0 : singleQuizzScreen.insertAdjacentHTML("afterbegin", headerHtml);
     singleQuizzScreen === null || singleQuizzScreen === void 0 ? void 0 : singleQuizzScreen.insertAdjacentElement("beforeend", answersContainer);
+    setTimeout(function () {
+        answersContainer.classList.add("display-visible");
+    }, 0);
 }
 function renderResults(quizz) {
     var html = "<h1>" + quizz.title + "</h1>\n  <header class=\"question-header\">\n    <h3>Voce acertou " + acertos + " de " + quizz.data.questions.length + " perguntas ! Score: " + score + "%</h3>\n  </header>\n  <div class=\"result-container\">\n    <div class=\"result-text-container\">\n      <h3>" + resultLevel.title + "</h3>\n      <p>\n        " + resultLevel.description + "\n      </p>\n    </div>\n    <figure class=\"result-image-container\">\n      <img\n        src=\"" + resultLevel.imageUrl + "\"\n        alt=\"\"\n      />\n    </figure>\n  </div>";

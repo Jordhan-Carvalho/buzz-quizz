@@ -224,6 +224,8 @@ main {
   padding: 20px;
   border-radius: 10px;
   margin: 15px 0 10px 0;
+  opacity: 0;
+  transition: all 1s;
 }
 
 .create-question-container > h3,
@@ -299,6 +301,8 @@ main {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 215px 215px;
   grid-gap: 0.5rem;
+  opacity: 0;
+  transition: all 0.5s;
 }
 
 .single-answer-container {
@@ -377,8 +381,8 @@ main {
   margin: 200px auto 0 auto;
 }
 
-.display-none2 {
-  display: none;
+.display-visible {
+  opacity: 1;
 }
 
 .display-none {

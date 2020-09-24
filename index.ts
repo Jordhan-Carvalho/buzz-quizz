@@ -496,6 +496,9 @@ function renderCreateQuestion(
     </div>`;
   questionNode.push(questionDiv);
   questionsContainer.appendChild(questionDiv);
+  setTimeout(() => {
+    questionDiv.classList.add("display-visible");
+  }, 0);
   console.log(`questionNode ${questionNode.length}`);
 }
 
@@ -525,6 +528,9 @@ function renderCreateLevels(singleLevel?: Level, i?: number, isEdit = false) {
 `;
   levelNode.push(levelDiv);
   levelsContainer.appendChild(levelDiv);
+  setTimeout(() => {
+    levelDiv.classList.add("display-visible");
+  }, 0);
 }
 
 function renderSingleQuestion(singleQuizz: Quizz) {
@@ -567,6 +573,10 @@ function renderSingleQuestion(singleQuizz: Quizz) {
   }
   singleQuizzScreen?.insertAdjacentHTML("afterbegin", headerHtml);
   singleQuizzScreen?.insertAdjacentElement("beforeend", answersContainer);
+
+  setTimeout(() => {
+    answersContainer.classList.add("display-visible");
+  }, 0);
 }
 
 function renderResults(quizz: Quizz) {
