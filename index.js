@@ -72,6 +72,7 @@ var addQuestionButton = document.querySelector(".add-question");
 var sendButton = document.querySelector(".post-quizz-button");
 var questionsContainer = document.querySelector(".questions-container");
 var levelsContainer = document.querySelector(".levels-container");
+var loadingScreen = document.querySelector(".loading-screen");
 // --------------------------------LOGIN SCREEN------------------------------------
 function login() {
     return __awaiter(this, void 0, void 0, function () {
@@ -116,6 +117,7 @@ function fetchQuizzes() {
             switch (_b.label) {
                 case 0:
                     _b.trys.push([0, 2, , 3]);
+                    isLoading();
                     return [4 /*yield*/, axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v1/buzzquizz/quizzes", {
                             headers: {
                                 "User-token": token
@@ -123,20 +125,19 @@ function fetchQuizzes() {
                         })];
                 case 1:
                     resp = _b.sent();
-                    console.log(resp.data);
                     quizzes = [];
                     for (_i = 0, _a = resp.data; _i < _a.length; _i++) {
                         quizz = _a[_i];
                         quizzes.push({ id: quizz.id, title: quizz.title, data: quizz.data });
                     }
-                    console.log("agora o quizz");
-                    console.log(quizzes);
                     return [3 /*break*/, 3];
                 case 2:
                     e_2 = _b.sent();
                     console.error(e_2);
                     return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
+                case 3:
+                    isLoading();
+                    return [2 /*return*/];
             }
         });
     });
@@ -225,10 +226,13 @@ function getAllQuestions() {
         }
         newQuestion = { questionTitle: questionTitle, answers: answers };
         questions.push(newQuestion);
+        console.log("Todas questoes");
+        console.log(questions);
     }
     return true;
 }
 function getAllLevels() {
+    levels = [];
     for (var _i = 0, levelNode_1 = levelNode; _i < levelNode_1.length; _i++) {
         var level = levelNode_1[_i];
         var newLevel = void 0;
@@ -392,11 +396,14 @@ function renderFromCreateToQuizzes() {
 function renderFromQuizzesToCreate(quizz) {
     questionsContainer.innerHTML = "";
     levelsContainer.innerHTML = "";
+    questionNode = [];
+    levelNode = [];
     if (quizz) {
         sendButton.setAttribute("onclick", "createQuizz(true, " + quizz.id + ")");
         sendButton.innerText = "Atualizar";
         quizzTitle.value = quizz.title;
         for (var i = 0; i < quizz.data.questions.length; i++) {
+            console.log(quizz);
             renderCreateQuestion(quizz.data.questions[i], i + 1, true);
         }
         for (var i = 0; i < quizz.data.levels.length; i++) {
@@ -407,8 +414,6 @@ function renderFromQuizzesToCreate(quizz) {
         sendButton.setAttribute("onclick", "createQuizz()");
         sendButton.innerText = "Publicar";
         quizzTitle.value = "";
-        levels = [];
-        questions = [];
         numberOfQuestions = 1;
         numberOfLevels = 1;
         renderCreateQuestion();
@@ -519,4 +524,7 @@ function renderResults(quizz) {
 // -------------------------------------HELPER FUNCTIONS----------------------------------------
 function firstLetterUpperCase(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
+}
+function isLoading() {
+    loadingScreen.classList.toggle("display-none");
 }

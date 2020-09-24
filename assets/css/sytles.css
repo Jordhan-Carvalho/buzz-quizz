@@ -131,7 +131,7 @@ main {
   background: var(--azulPrincipal);
   display: flex;
   align-items: center;
-  z-index: 1;
+  z-index: 2;
 }
 /* <!-- -------------------------------QUIZZES SCREEN-------------------------------- --> */
 
@@ -352,6 +352,21 @@ main {
 .result-text-container > h3 {
   font-weight: bold;
   margin-bottom: 20px;
+}
+
+/* <!-- -------------------------------LOADING SCREEN-------------------------------- --> */
+.loading-screen {
+  width: 100%;
+  height: 100vh;
+  background: white;
+  position: fixed;
+  z-index: 1;
+}
+
+.loading-spinner-container {
+  height: 50px;
+  width: 50px;
+  margin: 200px auto 0 auto;
 }
 
 .display-none {

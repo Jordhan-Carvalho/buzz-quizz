@@ -80,6 +80,8 @@ const levelsContainer = document.querySelector(
   ".levels-container"
 ) as HTMLElement;
 
+const loadingScreen = document.querySelector(".loading-screen") as HTMLElement;
+
 // --------------------------------LOGIN SCREEN------------------------------------
 async function login() {
   const data = {
@@ -109,6 +111,7 @@ async function login() {
 // ---------------------------------QUIZZES SCREEN---------------------------------------
 async function fetchQuizzes() {
   try {
+    isLoading();
     // @ts-ignore
     const resp = await axios.get(
       "https://mock-api.bootcamp.respondeai.com.br/api/v1/buzzquizz/quizzes",
@@ -118,16 +121,14 @@ async function fetchQuizzes() {
         },
       }
     );
-    console.log(resp.data);
     quizzes = [];
     for (let quizz of resp.data) {
       quizzes.push({ id: quizz.id, title: quizz.title, data: quizz.data });
     }
-    console.log("agora o quizz");
-    console.log(quizzes);
   } catch (e) {
     console.error(e);
   }
+  isLoading();
 }
 
 async function deleteQuizz(button: HTMLElement, quizzId: string) {
@@ -207,12 +208,16 @@ function getAllQuestions(): boolean {
       });
     }
     newQuestion = { questionTitle, answers };
+
     questions.push(newQuestion);
+    console.log("Todas questoes");
+    console.log(questions);
   }
   return true;
 }
 
 function getAllLevels() {
+  levels = [];
   for (let level of levelNode) {
     let newLevel: Level;
     let range = {
@@ -358,11 +363,14 @@ function renderFromCreateToQuizzes() {
 function renderFromQuizzesToCreate(quizz?: Quizz) {
   questionsContainer.innerHTML = "";
   levelsContainer.innerHTML = "";
+  questionNode = [];
+  levelNode = [];
   if (quizz) {
     sendButton.setAttribute("onclick", `createQuizz(true, ${quizz.id})`);
     sendButton.innerText = "Atualizar";
     quizzTitle.value = quizz.title;
     for (let i = 0; i < quizz.data.questions.length; i++) {
+      console.log(quizz);
       renderCreateQuestion(quizz.data.questions[i], i + 1, true);
     }
     for (let i = 0; i < quizz.data.levels.length; i++) {
@@ -372,8 +380,6 @@ function renderFromQuizzesToCreate(quizz?: Quizz) {
     sendButton.setAttribute("onclick", `createQuizz()`);
     sendButton.innerText = "Publicar";
     quizzTitle.value = "";
-    levels = [];
-    questions = [];
     numberOfQuestions = 1;
     numberOfLevels = 1;
     renderCreateQuestion();
@@ -581,4 +587,8 @@ function renderResults(quizz: Quizz) {
 
 function firstLetterUpperCase(string: string): string {
   return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function isLoading() {
+  loadingScreen.classList.toggle("display-none");
 }
