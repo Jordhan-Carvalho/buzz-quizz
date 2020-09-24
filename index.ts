@@ -1,4 +1,5 @@
 interface Quizz {
+  id?: string;
   title: string;
   data: {
     questions: Question[];
@@ -120,11 +121,44 @@ async function fetchQuizzes() {
     console.log(resp.data);
     quizzes = [];
     for (let quizz of resp.data) {
-      quizzes.push({ title: quizz.title, data: quizz.data });
+      quizzes.push({ id: quizz.id, title: quizz.title, data: quizz.data });
     }
+    console.log("agora o quizz");
+    console.log(quizzes);
   } catch (e) {
     console.error(e);
   }
+}
+
+async function deleteQuizz(button: HTMLElement, quizzId: string) {
+  const presp = prompt("Tem certeza? pra apagar digite SIM");
+  if (presp !== "SIM") return;
+  console.log("passou");
+
+  try {
+    //@ts-ignore
+    await axios.delete(
+      `https://mock-api.bootcamp.respondeai.com.br/api/v1/buzzquizz/quizzes/${quizzId}`,
+      {
+        headers: {
+          "User-Token": token,
+        },
+      }
+    );
+    console.log("foi");
+    renderQuizzes();
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+function editQuizz(button: HTMLElement, quizz: Quizz) {
+  console.log("entrou");
+  console.log(button);
+  console.log(quizz);
+  // renderizar a tela do create mas com os forms preechidos
+  renderFromQuizzesToCreate(quizz);
+  // modificar o botao publicar
 }
 
 // ---------------------------------CREATE QUIZZ SCREEN---------------------------------------
@@ -301,14 +335,23 @@ function renderFromCreateToQuizzes() {
   quizzesScreen?.classList.toggle("display-none");
 }
 
-function renderFromQuizzesToCreate() {
-  renderCreateQuestion();
-  renderCreateLevels();
+function renderFromQuizzesToCreate(quizz?: Quizz) {
+  questionsContainer.innerHTML = "";
+  if (quizz) {
+    for (let i = 0; i < quizz.data.questions.length; i++) {
+      renderCreateQuestion(quizz.data.questions[i], i + 1);
+    }
+  } else {
+    renderCreateQuestion();
+    renderCreateLevels();
+  }
   createQuizzScreen?.classList.toggle("display-none");
   quizzesScreen?.classList.toggle("display-none");
 }
 
-function renderFromQuizzesToQuizz(quizz: Quizz) {
+function renderFromQuizzesToQuizz(e: Event, quizz: Quizz) {
+  const clickedEle = e.target as HTMLElement;
+  if (clickedEle.classList.contains("md")) return;
   renderSingleQuestion(quizz);
   quizzesScreen?.classList.toggle("display-none");
   singleQuizzScreen?.classList.toggle("display-none");
@@ -339,42 +382,72 @@ async function renderQuizzes() {
                       </div>`;
   quizzesScreen?.insertAdjacentHTML("beforeend", newQuizzDiv);
   for (let quizz of quizzes) {
-    let html = `<p>${quizz.title}</h3>`;
+    let html = `<h3>${quizz.title}</h3>
+    <div class="icons-container">
+      <ion-icon class="delete-icon" onclick="deleteQuizz(this, ${quizz.id})" name="trash"></ion-icon>
+      <ion-icon class="edit-icon"   name="create"></ion-icon>
+    </div>`;
     let quizzDiv = document.createElement("div");
     quizzDiv.setAttribute("class", "box-container");
-    quizzDiv.addEventListener("click", () => renderFromQuizzesToQuizz(quizz));
+    quizzDiv.addEventListener("click", function (e: Event) {
+      renderFromQuizzesToQuizz(e, quizz);
+    });
     quizzDiv.innerHTML = html;
+    let editIcon = quizzDiv.querySelector(".edit-icon");
+    editIcon?.addEventListener("click", function (e: Event) {
+      editQuizz(e.target as HTMLElement, quizz);
+    });
     quizzesScreen?.insertAdjacentElement("beforeend", quizzDiv);
   }
 }
 
-function renderCreateQuestion() {
+function renderCreateQuestion(singleQuestion?: Question, i?: number) {
+  const isEdit = singleQuestion && i ? true : false;
+  if (isEdit) numberOfQuestions = i as number;
   let questionDiv = document.createElement("div");
   questionDiv.setAttribute("class", "create-question-container");
   questionDiv.innerHTML = `<h3>Pergunta ${numberOfQuestions}</h3>
-    <input class="question-input" type="text" id="question-title${numberOfQuestions}" placeholder="Digite a pergunta">
+    <input class="question-input" type="text" placeholder="Digite a pergunta" value="${
+      isEdit ? singleQuestion?.questionTitle : ""
+    }" >
     <div class="answer-input-container correct-answer">
-      <input type="text" id="correct-answer${numberOfQuestions}" placeholder="Digite a resposta correta">
-      <input type="text" id="correct-answer-image${numberOfQuestions}" placeholder="Link para imagem correta">
+      <input type="text" placeholder="Digite a resposta correta" value="${
+        isEdit ? singleQuestion?.answers[0].answer : ""
+      }">
+      <input type="text" placeholder="Link para imagem correta" value="${
+        isEdit ? singleQuestion?.answers[0].answerUrl : ""
+      }">
     </div>
     <div class="answer-input-container wrong-answer">
-      <input type="text" id="wrong1-answer${numberOfQuestions}" placeholder="Digite a resposta errada 1">
-      <input type="text" id="wrong1-answer-image${numberOfQuestions}" placeholder="Link para imagem errada 1">
+      <input type="text" placeholder="Digite a resposta errada 1" value="${
+        isEdit ? singleQuestion?.answers[1].answer : ""
+      }">
+      <input type="text" placeholder="Link para imagem errada 1" value="${
+        isEdit ? singleQuestion?.answers[1].answerUrl : ""
+      }">
     </div>
     <div class="answer-input-container wrong-answer">
-      <input type="text" id="wrong2-answer${numberOfQuestions}" placeholder="Digite a resposta errada 2">
-      <input type="text" id="wrong2-answer-image${numberOfQuestions}" placeholder="Link para imagem errada 2">
+      <input type="text" placeholder="Digite a resposta errada 2" value="${
+        isEdit ? singleQuestion?.answers[2].answer : ""
+      }">
+      <input type="text" placeholder="Link para imagem errada 2" value="${
+        isEdit ? singleQuestion?.answers[2].answerUrl : ""
+      }">
     </div>
     <div class="answer-input-container wrong-answer">
-      <input type="text" id="wrong3-answer${numberOfQuestions}" placeholder="Digite a resposta errada 3">
-      <input type="text" id="wrong3-answer-image${numberOfQuestions}" placeholder="Link para imagem errada 3">
+      <input type="text" placeholder="Digite a resposta errada 3" value="${
+        isEdit ? singleQuestion?.answers[3].answer : ""
+      }">
+      <input type="text" placeholder="Link para imagem errada 3" value="${
+        isEdit ? singleQuestion?.answers[3].answerUrl : ""
+      }">
     </div>`;
   questionNode.push(questionDiv);
   questionsContainer.appendChild(questionDiv);
   console.log(`questionNode ${questionNode.length}`);
 }
 
-function renderCreateLevels() {
+function renderCreateLevels(quizz?: Quizz) {
   let levelDiv = document.createElement("div");
   levelDiv.setAttribute("class", "create-level-container");
   levelDiv.innerHTML = `

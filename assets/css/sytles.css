@@ -160,6 +160,23 @@ main {
   font-weight: bold;
 }
 
+.icons-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+}
+
+.edit-icon {
+  color: green;
+  z-index: 1;
+}
+
+.delete-icon {
+  color: red;
+  z-index: 1;
+}
+
 /* <!-- -------------------------------CREATE QUIZZ SCREEN-------------------------------- --> */
 
 .create-quizz-screen {
