@@ -60,6 +60,7 @@ const loadingGifQuizz = document.querySelector(".loading-gif-quizz");
 const loginButton = document.querySelector(".login-button");
 
 const mainContainerScreen = document.querySelector("main");
+const mainHeader = document.querySelector(".main-header");
 
 const quizzesScreen = document.querySelector(".quizzes-screen") as HTMLElement;
 
@@ -159,6 +160,7 @@ function createQuizz(edit = false, quizzId?: string) {
   // validar
   if (!getAllQuestions()) return;
   getAllQuestions();
+  if (!getAllLevels()) return;
   getAllLevels();
   if (edit) {
     updateQuizz(quizzId as string);
@@ -199,24 +201,27 @@ function getAllQuestions(): boolean {
     if (!checkQuestionMark(questionTitle)) return false;
     // Pegar todas respostas e colcoar num array
     for (let i = 2; i <= 5; i++) {
+      const answer = firstLetterUpperCase(
+        question.children[i].children[0].value.trim()
+      );
+      const answerUrl = question.children[i].children[1].value.trim();
       answers.push({
-        answer: firstLetterUpperCase(
-          question.children[i].children[0].value.trim()
-        ),
-        answerUrl: question.children[i].children[1].value.trim(),
+        answer,
+        answerUrl,
         correct: i === 2 ? true : false,
       });
+      if (answer === "" || answerUrl === "") {
+        alert("Preencha todos os campos");
+        return false;
+      }
     }
     newQuestion = { questionTitle, answers };
-
     questions.push(newQuestion);
-    console.log("Todas questoes");
-    console.log(questions);
   }
   return true;
 }
 
-function getAllLevels() {
+function getAllLevels(): boolean {
   levels = [];
   for (let level of levelNode) {
     let newLevel: Level;
@@ -227,9 +232,20 @@ function getAllLevels() {
     let title = firstLetterUpperCase(level.children[2].value.trim());
     let imageUrl = level.children[3].value.trim();
     let description = firstLetterUpperCase(level.children[4].value.trim());
+    if (
+      title === "" ||
+      imageUrl === "" ||
+      description === "" ||
+      isNaN(range.minRange) ||
+      isNaN(range.maxRange)
+    ) {
+      alert("Preencha todos os campos");
+      return false;
+    }
     newLevel = { title, range, description, imageUrl };
     levels.push(newLevel);
   }
+  return true;
 }
 
 async function sendToServer() {
@@ -343,15 +359,8 @@ function renderFromLoginToQuizzes() {
   renderQuizzes();
   loginScreen?.classList.add("display-none");
   mainContainerScreen?.classList.remove("display-none");
+  mainHeader?.classList.remove("display-none");
   quizzesScreen?.classList.remove("display-none");
-}
-
-function renderProvisorio() {
-  loginScreen?.classList.add("display-none");
-  mainContainerScreen?.classList.remove("display-none");
-  createQuizzScreen?.classList.remove("display-none");
-  renderCreateQuestion();
-  renderCreateLevels();
 }
 
 function renderFromCreateToQuizzes() {

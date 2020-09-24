@@ -12,6 +12,7 @@ body {
   font-family: var(--fonteSemSerifa);
   display: flex;
   justify-content: center;
+  width: 100vw;
 }
 
 h1 {
@@ -69,6 +70,8 @@ main {
   justify-content: space-evenly;
   align-items: center;
   flex-wrap: wrap;
+  opacity: 1;
+  transition: opacity 1s ease-out;
   /* transition: all 5s; */
 }
 
@@ -80,6 +83,8 @@ main {
   align-items: center;
   margin-top: 200px;
   width: 100%;
+  transition: opacity 1s ease-out;
+  /* height: 100%; */
   /* transition: all 5s; */
 }
 
@@ -132,6 +137,8 @@ main {
   display: flex;
   align-items: center;
   z-index: 2;
+  opacity: 1;
+  transition: opacity 1s;
 }
 /* <!-- -------------------------------QUIZZES SCREEN-------------------------------- --> */
 
@@ -298,7 +305,6 @@ main {
   display: flex;
   flex-direction: column;
   border-radius: 10px;
-
   overflow: hidden;
 }
 
@@ -361,6 +367,8 @@ main {
   background: white;
   position: fixed;
   z-index: 1;
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
 }
 
 .loading-spinner-container {
@@ -369,8 +377,15 @@ main {
   margin: 200px auto 0 auto;
 }
 
-.display-none {
+.display-none2 {
   display: none;
+}
+
+.display-none {
+  opacity: 0;
+  height: 0;
+  width: 0;
+  overflow: hidden;
 }
 
 /* <!-- -------------------------------MOBILE-------------------------------- --> */

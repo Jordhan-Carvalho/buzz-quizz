@@ -63,6 +63,7 @@ var loadingGif = document.querySelector(".loading-gif");
 var loadingGifQuizz = document.querySelector(".loading-gif-quizz");
 var loginButton = document.querySelector(".login-button");
 var mainContainerScreen = document.querySelector("main");
+var mainHeader = document.querySelector(".main-header");
 var quizzesScreen = document.querySelector(".quizzes-screen");
 var endGameScreen = document.querySelector(".end-game-screen");
 var singleQuizzScreen = document.querySelector(".single-quizz-screen");
@@ -183,6 +184,8 @@ function createQuizz(edit, quizzId) {
     if (!getAllQuestions())
         return;
     getAllQuestions();
+    if (!getAllLevels())
+        return;
     getAllLevels();
     if (edit) {
         updateQuizz(quizzId);
@@ -218,16 +221,20 @@ function getAllQuestions() {
             return false;
         // Pegar todas respostas e colcoar num array
         for (var i = 2; i <= 5; i++) {
+            var answer = firstLetterUpperCase(question.children[i].children[0].value.trim());
+            var answerUrl = question.children[i].children[1].value.trim();
             answers.push({
-                answer: firstLetterUpperCase(question.children[i].children[0].value.trim()),
-                answerUrl: question.children[i].children[1].value.trim(),
+                answer: answer,
+                answerUrl: answerUrl,
                 correct: i === 2 ? true : false
             });
+            if (answer === "" || answerUrl === "") {
+                alert("Preencha todos os campos");
+                return false;
+            }
         }
         newQuestion = { questionTitle: questionTitle, answers: answers };
         questions.push(newQuestion);
-        console.log("Todas questoes");
-        console.log(questions);
     }
     return true;
 }
@@ -243,9 +250,18 @@ function getAllLevels() {
         var title = firstLetterUpperCase(level.children[2].value.trim());
         var imageUrl = level.children[3].value.trim();
         var description = firstLetterUpperCase(level.children[4].value.trim());
+        if (title === "" ||
+            imageUrl === "" ||
+            description === "" ||
+            isNaN(range.minRange) ||
+            isNaN(range.maxRange)) {
+            alert("Preencha todos os campos");
+            return false;
+        }
         newLevel = { title: title, range: range, description: description, imageUrl: imageUrl };
         levels.push(newLevel);
     }
+    return true;
 }
 function sendToServer() {
     return __awaiter(this, void 0, void 0, function () {
@@ -379,14 +395,8 @@ function renderFromLoginToQuizzes() {
     renderQuizzes();
     loginScreen === null || loginScreen === void 0 ? void 0 : loginScreen.classList.add("display-none");
     mainContainerScreen === null || mainContainerScreen === void 0 ? void 0 : mainContainerScreen.classList.remove("display-none");
+    mainHeader === null || mainHeader === void 0 ? void 0 : mainHeader.classList.remove("display-none");
     quizzesScreen === null || quizzesScreen === void 0 ? void 0 : quizzesScreen.classList.remove("display-none");
-}
-function renderProvisorio() {
-    loginScreen === null || loginScreen === void 0 ? void 0 : loginScreen.classList.add("display-none");
-    mainContainerScreen === null || mainContainerScreen === void 0 ? void 0 : mainContainerScreen.classList.remove("display-none");
-    createQuizzScreen === null || createQuizzScreen === void 0 ? void 0 : createQuizzScreen.classList.remove("display-none");
-    renderCreateQuestion();
-    renderCreateLevels();
 }
 function renderFromCreateToQuizzes() {
     renderQuizzes();
