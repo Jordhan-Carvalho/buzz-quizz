@@ -72,7 +72,7 @@ const singleQuizzScreen = document.querySelector(
 const createQuizzScreen = document.querySelector(".create-quizz-screen");
 const quizzTitle = document.querySelector("#quizz-title") as HTMLInputElement;
 const addQuestionButton = document.querySelector(".add-question");
-const sendButton = document.querySelector(".post-quizz-button");
+const sendButton = document.querySelector(".post-quizz-button") as HTMLElement;
 const questionsContainer = document.querySelector(
   ".questions-container"
 ) as HTMLElement;
@@ -152,23 +152,18 @@ async function deleteQuizz(button: HTMLElement, quizzId: string) {
   }
 }
 
-function editQuizz(button: HTMLElement, quizz: Quizz) {
-  console.log("entrou");
-  console.log(button);
-  console.log(quizz);
-  // renderizar a tela do create mas com os forms preechidos
-  renderFromQuizzesToCreate(quizz);
-  // modificar o botao publicar
-}
-
 // ---------------------------------CREATE QUIZZ SCREEN---------------------------------------
 
-function createQuizz() {
+function createQuizz(edit = false, quizzId?: string) {
+  // validar
   if (!getAllQuestions()) return;
   getAllQuestions();
   getAllLevels();
-  // validar
-  sendToServer();
+  if (edit) {
+    updateQuizz(quizzId as string);
+  } else {
+    sendToServer();
+  }
 }
 
 function addQuestion() {
@@ -257,8 +252,33 @@ async function sendToServer() {
   } catch (e) {
     console.error(e);
     alert("Preencha todos os campos");
-    toggleIsLoadingQuizz();
   }
+  toggleIsLoadingQuizz();
+}
+
+async function updateQuizz(id: string) {
+  const quizzData: Quizz = {
+    title: firstLetterUpperCase(quizzTitle.value.trim()),
+    data: {
+      levels,
+      questions,
+    },
+  };
+  try {
+    toggleIsLoadingQuizz();
+    // @ts-ignore
+    await axios.put(
+      `https://mock-api.bootcamp.respondeai.com.br/api/v1/buzzquizz/quizzes/${id}`,
+      quizzData,
+      { headers: { "User-Token": token } }
+    );
+    console.log("FOI CARLAHOOOOOO");
+    renderFromCreateToQuizzes();
+  } catch (e) {
+    console.error(e);
+    alert("Preencha todos os campos");
+  }
+  toggleIsLoadingQuizz();
 }
 
 // ---------------------------------SINGLE QUIZZ SCREEN--------------------------------------
@@ -337,11 +357,25 @@ function renderFromCreateToQuizzes() {
 
 function renderFromQuizzesToCreate(quizz?: Quizz) {
   questionsContainer.innerHTML = "";
+  levelsContainer.innerHTML = "";
   if (quizz) {
+    sendButton.setAttribute("onclick", `createQuizz(true, ${quizz.id})`);
+    sendButton.innerText = "Atualizar";
+    quizzTitle.value = quizz.title;
     for (let i = 0; i < quizz.data.questions.length; i++) {
-      renderCreateQuestion(quizz.data.questions[i], i + 1);
+      renderCreateQuestion(quizz.data.questions[i], i + 1, true);
+    }
+    for (let i = 0; i < quizz.data.levels.length; i++) {
+      renderCreateLevels(quizz.data.levels[i], i + 1, true);
     }
   } else {
+    sendButton.setAttribute("onclick", `createQuizz()`);
+    sendButton.innerText = "Publicar";
+    quizzTitle.value = "";
+    levels = [];
+    questions = [];
+    numberOfQuestions = 1;
+    numberOfLevels = 1;
     renderCreateQuestion();
     renderCreateLevels();
   }
@@ -395,14 +429,17 @@ async function renderQuizzes() {
     quizzDiv.innerHTML = html;
     let editIcon = quizzDiv.querySelector(".edit-icon");
     editIcon?.addEventListener("click", function (e: Event) {
-      editQuizz(e.target as HTMLElement, quizz);
+      renderFromQuizzesToCreate(quizz);
     });
     quizzesScreen?.insertAdjacentElement("beforeend", quizzDiv);
   }
 }
 
-function renderCreateQuestion(singleQuestion?: Question, i?: number) {
-  const isEdit = singleQuestion && i ? true : false;
+function renderCreateQuestion(
+  singleQuestion?: Question,
+  i?: number,
+  isEdit = false
+) {
   if (isEdit) numberOfQuestions = i as number;
   let questionDiv = document.createElement("div");
   questionDiv.setAttribute("class", "create-question-container");
@@ -447,18 +484,29 @@ function renderCreateQuestion(singleQuestion?: Question, i?: number) {
   console.log(`questionNode ${questionNode.length}`);
 }
 
-function renderCreateLevels(quizz?: Quizz) {
+function renderCreateLevels(singleLevel?: Level, i?: number, isEdit = false) {
+  if (isEdit) numberOfLevels = i as number;
   let levelDiv = document.createElement("div");
   levelDiv.setAttribute("class", "create-level-container");
   levelDiv.innerHTML = `
   <h3>Nível ${numberOfLevels}</h3>
   <div class="answer-input-container">
-    <input type="text" placeholder="% Minima de Acerto do nível">
-    <input type="text"  placeholder="% Máxima de Acerto do nível">
+    <input type="text" placeholder="% Minima de Acerto do nível" value="${
+      isEdit ? singleLevel?.range.minRange : ""
+    }">
+    <input type="text"  placeholder="% Máxima de Acerto do nível" value="${
+      isEdit ? singleLevel?.range.maxRange : ""
+    }">
   </div>
-    <input class="question-input" type="text"  placeholder="Título do nível">
-    <input class="question-input" type="text"  placeholder="Link da imagem do nível">
-    <textarea class="question-input"  rows="4" placeholder="Descrição do Nível"></textarea>
+    <input class="question-input" type="text"  placeholder="Título do nível" value="${
+      isEdit ? singleLevel?.title : ""
+    }">
+    <input class="question-input" type="text"  placeholder="Link da imagem do nível" value="${
+      isEdit ? singleLevel?.imageUrl : ""
+    }">
+    <textarea class="question-input level-desc"  rows="4" placeholder="Descrição do Nível">${
+      isEdit ? singleLevel?.description : ""
+    }</textarea>
 `;
   levelNode.push(levelDiv);
   levelsContainer.appendChild(levelDiv);
