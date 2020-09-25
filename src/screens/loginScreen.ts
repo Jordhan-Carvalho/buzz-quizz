@@ -3,6 +3,7 @@ async function login() {
     email: emailInput.value.trim(),
     password: passwordInput.value.trim(),
   };
+
   if (data.email === "" || data.password === "") {
     alert("Preencher todos os campos");
     return;

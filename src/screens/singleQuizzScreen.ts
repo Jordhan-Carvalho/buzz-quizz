@@ -1,9 +1,10 @@
 function selectAnswer(answer: HTMLElement, singleQuizz: Quizz) {
   changeAnswersBG();
   currentQuestion++;
-  if (answer.hasAttribute("correct")) acertos++;
 
+  if (answer.hasAttribute("correct")) acertos++;
   const endGame = singleQuizz.data.questions.length < currentQuestion;
+
   if (endGame) {
     setTimeout(function () {
       calculateScoreAndLevel(singleQuizz);

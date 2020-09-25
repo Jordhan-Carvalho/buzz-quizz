@@ -21,23 +21,26 @@ let resultLevel = {
     range: { minRange: 0, maxRange: 100 },
 };
 // ----------------------------------NODE && NODE LIST------------------------------
+// ---Login Nodes---
 const loginScreen = document.querySelector(".login-screen");
 const emailInput = document.querySelector(".email-input");
 const passwordInput = document.querySelector(".password-input");
 const loadingGif = document.querySelector(".loading-gif");
 const loadingGifQuizz = document.querySelector(".loading-gif-quizz");
 const loginButton = document.querySelector(".login-button");
-const mainContainerScreen = document.querySelector("main");
-const mainHeader = document.querySelector(".main-header");
-const quizzesScreen = document.querySelector(".quizzes-screen");
-const endGameScreen = document.querySelector(".end-game-screen");
-const singleQuizzScreen = document.querySelector(".single-quizz-screen");
+// ---Create Quizz nodes---
 const createQuizzScreen = document.querySelector(".create-quizz-screen");
 const quizzTitle = document.querySelector("#quizz-title");
 const addQuestionButton = document.querySelector(".add-question");
 const sendButton = document.querySelector(".post-quizz-button");
 const questionsContainer = document.querySelector(".questions-container");
 const levelsContainer = document.querySelector(".levels-container");
-const loadingScreen = document.querySelector(".loading-screen");
 const fontColor = document.querySelector("#quizz-font-color");
 const themeColor = document.querySelector("#quizz-bg-color");
+// ---Screen nodes---
+const mainContainerScreen = document.querySelector("main");
+const mainHeader = document.querySelector(".main-header");
+const quizzesScreen = document.querySelector(".quizzes-screen");
+const endGameScreen = document.querySelector(".end-game-screen");
+const singleQuizzScreen = document.querySelector(".single-quizz-screen");
+const loadingScreen = document.querySelector(".loading-screen");

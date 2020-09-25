@@ -23,6 +23,7 @@ let resultLevel: Level = {
 };
 
 // ----------------------------------NODE && NODE LIST------------------------------
+// ---Login Nodes---
 const loginScreen = document.querySelector(".login-screen");
 const emailInput = document.querySelector(".email-input") as HTMLInputElement;
 const passwordInput = document.querySelector(
@@ -32,17 +33,7 @@ const loadingGif = document.querySelector(".loading-gif");
 const loadingGifQuizz = document.querySelector(".loading-gif-quizz");
 const loginButton = document.querySelector(".login-button");
 
-const mainContainerScreen = document.querySelector("main");
-const mainHeader = document.querySelector(".main-header");
-
-const quizzesScreen = document.querySelector(".quizzes-screen") as HTMLElement;
-
-const endGameScreen = document.querySelector(".end-game-screen");
-
-const singleQuizzScreen = document.querySelector(
-  ".single-quizz-screen"
-) as HTMLElement;
-
+// ---Create Quizz nodes---
 const createQuizzScreen = document.querySelector(".create-quizz-screen");
 const quizzTitle = document.querySelector("#quizz-title") as HTMLInputElement;
 const addQuestionButton = document.querySelector(".add-question");
@@ -53,11 +44,19 @@ const questionsContainer = document.querySelector(
 const levelsContainer = document.querySelector(
   ".levels-container"
 ) as HTMLElement;
-
-const loadingScreen = document.querySelector(".loading-screen") as HTMLElement;
 const fontColor = document.querySelector(
   "#quizz-font-color"
 ) as HTMLInputElement;
 const themeColor = document.querySelector(
   "#quizz-bg-color"
 ) as HTMLInputElement;
+
+// ---Screen nodes---
+const mainContainerScreen = document.querySelector("main");
+const mainHeader = document.querySelector(".main-header");
+const quizzesScreen = document.querySelector(".quizzes-screen") as HTMLElement;
+const endGameScreen = document.querySelector(".end-game-screen");
+const singleQuizzScreen = document.querySelector(
+  ".single-quizz-screen"
+) as HTMLElement;
+const loadingScreen = document.querySelector(".loading-screen") as HTMLElement;

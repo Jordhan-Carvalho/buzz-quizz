@@ -11,6 +11,7 @@ async function fetchQuizzes() {
       }
     );
     quizzes = [];
+
     for (let quizz of resp.data) {
       quizzes.push({ id: quizz.id, title: quizz.title, data: quizz.data });
     }
@@ -24,7 +25,6 @@ async function fetchQuizzes() {
 async function deleteQuizz(quizzId: string) {
   const presp = prompt("Tem certeza? pra apagar digite SIM");
   if (presp !== "SIM") return;
-  console.log("passou");
 
   try {
     //@ts-ignore
@@ -36,7 +36,6 @@ async function deleteQuizz(quizzId: string) {
         },
       }
     );
-    console.log("foi");
     renderQuizzes();
   } catch (e) {
     console.error(e);

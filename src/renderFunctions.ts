@@ -18,26 +18,9 @@ function renderFromQuizzesToCreate(quizz?: Quizz) {
   questionNode = [];
   levelNode = [];
   if (quizz) {
-    sendButton.setAttribute("onclick", `createQuizz(true, ${quizz.id})`);
-    sendButton.innerText = "Atualizar";
-    quizzTitle.value = quizz.title;
-    fontColor.value = quizz.data.config.fontColor;
-    themeColor.value = quizz.data.config.themeColor;
-    for (let i = 0; i < quizz.data.questions.length; i++) {
-      console.log(quizz);
-      renderCreateQuestion(quizz.data.questions[i], i + 1, true);
-    }
-    for (let i = 0; i < quizz.data.levels.length; i++) {
-      renderCreateLevels(quizz.data.levels[i], i + 1, true);
-    }
+    renderEditQuizz(quizz);
   } else {
-    sendButton.setAttribute("onclick", `createQuizz()`);
-    sendButton.innerText = "Publicar";
-    quizzTitle.value = "";
-    numberOfQuestions = 1;
-    numberOfLevels = 1;
-    renderCreateQuestion();
-    renderCreateLevels();
+    renderCreateQuizz();
   }
   createQuizzScreen?.classList.toggle("display-none");
   quizzesScreen?.classList.toggle("display-none");
@@ -65,6 +48,30 @@ function toggleIsLoading() {
 function toggleIsLoadingQuizz() {
   loadingGifQuizz?.classList.toggle("display-none");
   sendButton?.classList.toggle("display-none");
+}
+
+function renderEditQuizz(quizz: Quizz) {
+  sendButton.setAttribute("onclick", `createQuizz(true, ${quizz.id})`);
+  sendButton.innerText = "Atualizar";
+  quizzTitle.value = quizz.title;
+  fontColor.value = quizz.data.config.fontColor;
+  themeColor.value = quizz.data.config.themeColor;
+  for (let i = 0; i < quizz.data.questions.length; i++) {
+    renderCreateQuestion(quizz.data.questions[i], i + 1, true);
+  }
+  for (let i = 0; i < quizz.data.levels.length; i++) {
+    renderCreateLevels(quizz.data.levels[i], i + 1, true);
+  }
+}
+
+function renderCreateQuizz() {
+  sendButton.setAttribute("onclick", `createQuizz()`);
+  sendButton.innerText = "Publicar";
+  quizzTitle.value = "";
+  numberOfQuestions = 1;
+  numberOfLevels = 1;
+  renderCreateQuestion();
+  renderCreateLevels();
 }
 
 async function renderQuizzes() {
@@ -101,8 +108,10 @@ function renderCreateQuestion(
   isEdit = false
 ) {
   if (isEdit) numberOfQuestions = i as number;
+
   let questionDiv = document.createElement("div");
   questionDiv.setAttribute("class", "create-question-container");
+
   questionDiv.innerHTML = `<h3>Pergunta ${numberOfQuestions}</h3>
     <input class="question-input" type="text" placeholder="Digite a pergunta" value="${
       isEdit ? singleQuestion?.questionTitle : ""
@@ -139,18 +148,20 @@ function renderCreateQuestion(
         isEdit ? singleQuestion?.answers[3].answerUrl : ""
       }">
     </div>`;
+
   questionNode.push(questionDiv);
   questionsContainer.appendChild(questionDiv);
   setTimeout(() => {
     questionDiv.classList.add("display-visible");
   }, 0);
-  console.log(`questionNode ${questionNode.length}`);
 }
 
 function renderCreateLevels(singleLevel?: Level, i?: number, isEdit = false) {
   if (isEdit) numberOfLevels = i as number;
+
   let levelDiv = document.createElement("div");
   levelDiv.setAttribute("class", "create-level-container");
+
   levelDiv.innerHTML = `
   <h3>Nível ${numberOfLevels}</h3>
   <div class="answer-input-container">
@@ -171,6 +182,7 @@ function renderCreateLevels(singleLevel?: Level, i?: number, isEdit = false) {
       isEdit ? singleLevel?.description : ""
     }</textarea>
 `;
+
   levelNode.push(levelDiv);
   levelsContainer.appendChild(levelDiv);
   setTimeout(() => {
@@ -190,8 +202,10 @@ function renderSingleQuestion(singleQuizz: Quizz) {
     singleQuizz.data.questions[currentQuestion - 1].questionTitle
   }</h3>
   </header> `;
+
   let answersContainer = document.createElement("div");
   answersContainer.setAttribute("class", "answers-container");
+
   for (let i = 0; i < 4; i++) {
     answersContainer.innerHTML += `<div class="single-answer-container"  ${
       answersArray[i].correct ? "correct" : ""
@@ -207,6 +221,7 @@ function renderSingleQuestion(singleQuizz: Quizz) {
     </div>
   </div>`;
   }
+
   for (let i = 1; i <= 4; i++) {
     let singleAnswerContainer = answersContainer.querySelector(
       `.single-answer-container:nth-child(${i})`
@@ -216,6 +231,7 @@ function renderSingleQuestion(singleQuizz: Quizz) {
       selectAnswer(this, singleQuizz);
     });
   }
+
   singleQuizzScreen?.insertAdjacentHTML("afterbegin", headerHtml);
   singleQuizzScreen?.insertAdjacentElement("beforeend", answersContainer);
   document.documentElement.style.setProperty(
@@ -226,7 +242,6 @@ function renderSingleQuestion(singleQuizz: Quizz) {
     "--quizzFontColor",
     `${singleQuizz.data.config.fontColor}`
   );
-
   setTimeout(() => {
     answersContainer.classList.add("display-visible");
   }, 0);

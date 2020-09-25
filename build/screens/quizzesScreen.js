@@ -22,7 +22,6 @@ async function deleteQuizz(quizzId) {
     const presp = prompt("Tem certeza? pra apagar digite SIM");
     if (presp !== "SIM")
         return;
-    console.log("passou");
     try {
         //@ts-ignore
         await axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v1/buzzquizz/quizzes/${quizzId}`, {
@@ -30,7 +29,6 @@ async function deleteQuizz(quizzId) {
                 "User-Token": token,
             },
         });
-        console.log("foi");
         renderQuizzes();
     }
     catch (e) {

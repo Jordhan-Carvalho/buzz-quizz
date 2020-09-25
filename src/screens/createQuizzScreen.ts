@@ -1,8 +1,9 @@
 function createQuizz(edit = false, quizzId?: string) {
-  // validar
+  // validação
   if (!getAllQuestions()) return;
-  getAllQuestions();
   if (!getAllLevels()) return;
+
+  getAllQuestions();
   getAllLevels();
   if (edit) {
     updateQuizz(quizzId as string);
@@ -22,10 +23,11 @@ function addLevel() {
 }
 
 function checkQuestionMark(question: string): boolean {
-  if (
+  const isValidCheckMark =
     question.charAt(question.length - 1) !== "?" ||
-    question.indexOf("?") !== question.length - 1
-  ) {
+    question.indexOf("?") !== question.length - 1;
+
+  if (isValidCheckMark) {
     alert(
       "É obrigatorio terminar a pergunta com '?', e só se pode ter 1 pergunta por bloco de perguntas."
     );
@@ -37,22 +39,26 @@ function checkQuestionMark(question: string): boolean {
 
 function getAllQuestions(): boolean {
   questions = [];
+
   for (let question of questionNode) {
     let newQuestion: Question;
     let answers: Answer[] = [];
     let questionTitle = firstLetterUpperCase(question.children[1].value.trim());
+
     if (!checkQuestionMark(questionTitle)) return false;
-    // Pegar todas respostas e colcoar num array
+
     for (let i = 2; i <= 5; i++) {
       const answer = firstLetterUpperCase(
         question.children[i].children[0].value.trim()
       );
       const answerUrl = question.children[i].children[1].value.trim();
+
       answers.push({
         answer,
         answerUrl,
         correct: i === 2 ? true : false,
       });
+
       if (answer === "" || answerUrl === "") {
         alert("Preencha todos os campos");
         return false;
@@ -68,6 +74,7 @@ function getAllQuestions(): boolean {
 
 function getAllLevels(): boolean {
   levels = [];
+
   for (let level of levelNode) {
     let newLevel: Level;
     let range = {
@@ -88,6 +95,7 @@ function getAllLevels(): boolean {
       alert("Preencha todos os campos");
       return false;
     }
+
     newLevel = { title, range, description, imageUrl };
     levels.push(newLevel);
   }
@@ -107,8 +115,6 @@ async function sendToServer() {
       },
     },
   };
-  console.log(quizzData);
-  // return;
 
   try {
     toggleIsLoadingQuizz();
@@ -122,7 +128,6 @@ async function sendToServer() {
         },
       }
     );
-    console.log("enviado");
     renderFromCreateToQuizzes();
   } catch (e) {
     console.error(e);
@@ -153,11 +158,11 @@ async function updateQuizz(id: string) {
       quizzData,
       { headers: { "User-Token": token } }
     );
-    console.log("FOI CARLAHOOOOOO");
     renderFromCreateToQuizzes();
   } catch (e) {
     console.error(e);
     alert("Preencha todos os campos");
   }
+
   toggleIsLoadingQuizz();
 }

@@ -17,27 +17,10 @@ function renderFromQuizzesToCreate(quizz) {
     questionNode = [];
     levelNode = [];
     if (quizz) {
-        sendButton.setAttribute("onclick", `createQuizz(true, ${quizz.id})`);
-        sendButton.innerText = "Atualizar";
-        quizzTitle.value = quizz.title;
-        fontColor.value = quizz.data.config.fontColor;
-        themeColor.value = quizz.data.config.themeColor;
-        for (let i = 0; i < quizz.data.questions.length; i++) {
-            console.log(quizz);
-            renderCreateQuestion(quizz.data.questions[i], i + 1, true);
-        }
-        for (let i = 0; i < quizz.data.levels.length; i++) {
-            renderCreateLevels(quizz.data.levels[i], i + 1, true);
-        }
+        renderEditQuizz(quizz);
     }
     else {
-        sendButton.setAttribute("onclick", `createQuizz()`);
-        sendButton.innerText = "Publicar";
-        quizzTitle.value = "";
-        numberOfQuestions = 1;
-        numberOfLevels = 1;
-        renderCreateQuestion();
-        renderCreateLevels();
+        renderCreateQuizz();
     }
     createQuizzScreen === null || createQuizzScreen === void 0 ? void 0 : createQuizzScreen.classList.toggle("display-none");
     quizzesScreen === null || quizzesScreen === void 0 ? void 0 : quizzesScreen.classList.toggle("display-none");
@@ -62,6 +45,28 @@ function toggleIsLoading() {
 function toggleIsLoadingQuizz() {
     loadingGifQuizz === null || loadingGifQuizz === void 0 ? void 0 : loadingGifQuizz.classList.toggle("display-none");
     sendButton === null || sendButton === void 0 ? void 0 : sendButton.classList.toggle("display-none");
+}
+function renderEditQuizz(quizz) {
+    sendButton.setAttribute("onclick", `createQuizz(true, ${quizz.id})`);
+    sendButton.innerText = "Atualizar";
+    quizzTitle.value = quizz.title;
+    fontColor.value = quizz.data.config.fontColor;
+    themeColor.value = quizz.data.config.themeColor;
+    for (let i = 0; i < quizz.data.questions.length; i++) {
+        renderCreateQuestion(quizz.data.questions[i], i + 1, true);
+    }
+    for (let i = 0; i < quizz.data.levels.length; i++) {
+        renderCreateLevels(quizz.data.levels[i], i + 1, true);
+    }
+}
+function renderCreateQuizz() {
+    sendButton.setAttribute("onclick", `createQuizz()`);
+    sendButton.innerText = "Publicar";
+    quizzTitle.value = "";
+    numberOfQuestions = 1;
+    numberOfLevels = 1;
+    renderCreateQuestion();
+    renderCreateLevels();
 }
 async function renderQuizzes() {
     await fetchQuizzes();
@@ -118,7 +123,6 @@ function renderCreateQuestion(singleQuestion, i, isEdit = false) {
     setTimeout(() => {
         questionDiv.classList.add("display-visible");
     }, 0);
-    console.log(`questionNode ${questionNode.length}`);
 }
 function renderCreateLevels(singleLevel, i, isEdit = false) {
     if (isEdit)

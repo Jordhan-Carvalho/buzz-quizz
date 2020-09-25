@@ -1,11 +1,11 @@
 "use strict";
 function createQuizz(edit = false, quizzId) {
-    // validar
+    // validação
     if (!getAllQuestions())
         return;
-    getAllQuestions();
     if (!getAllLevels())
         return;
+    getAllQuestions();
     getAllLevels();
     if (edit) {
         updateQuizz(quizzId);
@@ -23,8 +23,9 @@ function addLevel() {
     renderCreateLevels();
 }
 function checkQuestionMark(question) {
-    if (question.charAt(question.length - 1) !== "?" ||
-        question.indexOf("?") !== question.length - 1) {
+    const isValidCheckMark = question.charAt(question.length - 1) !== "?" ||
+        question.indexOf("?") !== question.length - 1;
+    if (isValidCheckMark) {
         alert("É obrigatorio terminar a pergunta com '?', e só se pode ter 1 pergunta por bloco de perguntas.");
         return false;
     }
@@ -38,7 +39,6 @@ function getAllQuestions() {
         let questionTitle = firstLetterUpperCase(question.children[1].value.trim());
         if (!checkQuestionMark(questionTitle))
             return false;
-        // Pegar todas respostas e colcoar num array
         for (let i = 2; i <= 5; i++) {
             const answer = firstLetterUpperCase(question.children[i].children[0].value.trim());
             const answerUrl = question.children[i].children[1].value.trim();
@@ -93,8 +93,6 @@ async function sendToServer() {
             },
         },
     };
-    console.log(quizzData);
-    // return;
     try {
         toggleIsLoadingQuizz();
         //@ts-ignore
@@ -103,7 +101,6 @@ async function sendToServer() {
                 "User-Token": token,
             },
         });
-        console.log("enviado");
         renderFromCreateToQuizzes();
     }
     catch (e) {
@@ -128,7 +125,6 @@ async function updateQuizz(id) {
         toggleIsLoadingQuizz();
         // @ts-ignore
         await axios.put(`https://mock-api.bootcamp.respondeai.com.br/api/v1/buzzquizz/quizzes/${id}`, quizzData, { headers: { "User-Token": token } });
-        console.log("FOI CARLAHOOOOOO");
         renderFromCreateToQuizzes();
     }
     catch (e) {
