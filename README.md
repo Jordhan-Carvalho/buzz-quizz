@@ -4,7 +4,7 @@ BuzzQuizz é um sistema para criação e realização de quizzes inspirado nos B
 
 ## Description
 
-Este projeto engloba a parte front-end da aplicação, e foi totalmente construido com TS, HTML e CSS puro sem framworks, e com o uso das bibliotecas axios e ion-icons.
+Este projeto engloba a parte front-end da aplicação, e foi totalmente construido com TS, HTML e CSS puro sem frameworks, e com o uso das bibliotecas axios e ion-icons.
 
 A lista de funcionalidades inclui:
 
