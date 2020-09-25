@@ -20,10 +20,12 @@
   .create-quizz-screen {
     width: 90%;
   }
+  .answers-container {
+    grid-template-columns: 1fr;
+  }
 
-  /* --single quizz-- */
   .single-quizz-screen {
-    margin-top: 50px;
+    margin-top: 60px;
   }
   .single-quizz-screen p {
     font-size: 14px;
