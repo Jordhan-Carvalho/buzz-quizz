@@ -6,6 +6,7 @@
   --azulSecundario: #39385a;
   --greenLight: #daffd9;
   --redLight: #ffd9d9;
+  --quizzFontColor: rgb(150, 150, 150);
 }
 
 body {
@@ -284,11 +285,12 @@ main {
 .single-quizz-screen > h1 {
   font-family: var(--fontSerifada);
   font-weight: bold;
+  color: var(--quizzFontColor);
 }
 
 .question-header {
-  color: white;
   background: var(--azulPrincipal);
+  color: var(--quizzFontColor);
   width: 100%;
   padding: 20px 50px;
   text-align: center;
@@ -330,7 +332,7 @@ main {
 .single-answer-container p {
   font-weight: bold;
   font-size: 20px;
-  color: rgb(100, 100, 100);
+  color: var(--quizzFontColor);
   margin: auto 10px;
 }
 
@@ -351,7 +353,7 @@ main {
 .result-text-container {
   padding: 10px;
   width: 50%;
-  color: rgb(150, 150, 150);
+  color: var(--quizzFontColor);
   margin-right: 5px;
 }
 
@@ -379,6 +381,25 @@ main {
   height: 50px;
   width: 50px;
   margin: 200px auto 0 auto;
+}
+
+/* <!-- -------------------------------COLOR PICKER-------------------------------- --> */
+.color-picker {
+  display: flex;
+  width: 100%;
+  padding: 10px;
+  margin: 5px;
+  justify-content: space-between;
+  align-items: center;
+  color: rgb(150, 150, 150);
+}
+
+#quizz-bg-color,
+#quizz-font-color {
+  padding: 0;
+  border: none;
+  background: transparent;
+  outline: none;
 }
 
 .display-visible {

@@ -53,6 +53,28 @@
           id="quizz-title"
           placeholder="Digite o título do seu quizz"
         />
+        <div class="color-picker">
+          <p>Selecione as cores do seu Quizz:</p>
+          <div>
+            <input
+              type="color"
+              id="quizz-bg-color"
+              name="head"
+              value="#6c8fb8"
+            />
+            <label for="head">Fundo</label>
+          </div>
+
+          <div>
+            <input
+              type="color"
+              id="quizz-font-color"
+              name="body"
+              value="#969696"
+            />
+            <label for="body">Fonte</label>
+          </div>
+        </div>
         <div class="questions-container"></div>
         <ion-icon
           class="add-question"
@@ -84,6 +106,13 @@
     </main>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/ionicons@5.1.2/dist/ionicons.js"></script>
-    <script src="./index.js"></script>
+    <script src="./build/globalVariables.js"></script>
+    <script src="./build/screens/loginScreen.js"></script>
+    <script src="./build/screens/quizzesScreen.js"></script>
+    <script src="./build/screens/createQuizzScreen.js"></script>
+    <script src="./build/screens/singleQuizzScreen.js"></script>
+    <script src="./build/screens/endGameScreen.js"></script>
+    <script src="./build/renderFunctions.js"></script>
+    <script src="./build/helperFunctions.js"></script>
   </body>
 </html>
