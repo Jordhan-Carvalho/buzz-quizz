@@ -9,18 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 function createQuizz(edit = false, quizzId) {
-    // validação
-    if (!getAllQuestions())
-        return;
-    if (!getAllLevels())
-        return;
-    getAllQuestions();
-    getAllLevels();
-    if (edit) {
-        updateQuizz(quizzId);
+    try {
+        getAllQuestions();
+        getAllLevels();
+        if (edit) {
+            updateQuizz(quizzId);
+        }
+        else {
+            sendToServer();
+        }
     }
-    else {
-        sendToServer();
+    catch (error) {
+        alert(error.message);
+        console.error(error);
     }
 }
 function addQuestion() {
@@ -35,10 +36,8 @@ function checkQuestionMark(question) {
     const isValidCheckMark = question.charAt(question.length - 1) !== "?" ||
         question.indexOf("?") !== question.length - 1;
     if (isValidCheckMark) {
-        alert("É obrigatorio terminar a pergunta com '?', e só se pode ter 1 pergunta por bloco de perguntas.");
-        return false;
+        throw new Error("É obrigatorio terminar a pergunta com '?', e só se pode ter 1 pergunta por bloco de perguntas.");
     }
-    return true;
 }
 function getAllQuestions() {
     questions = [];
@@ -46,8 +45,7 @@ function getAllQuestions() {
         let newQuestion;
         let answers = [];
         let questionTitle = firstLetterUpperCase(question.children[1].value.trim());
-        if (!checkQuestionMark(questionTitle))
-            return false;
+        checkQuestionMark(questionTitle);
         for (let i = 2; i <= 5; i++) {
             const answer = firstLetterUpperCase(question.children[i].children[0].value.trim());
             const answerUrl = question.children[i].children[1].value.trim();
@@ -57,14 +55,12 @@ function getAllQuestions() {
                 correct: i === 2 ? true : false,
             });
             if (answer === "" || answerUrl === "") {
-                alert("Preencha todos os campos");
-                return false;
+                throw new Error("Campo de resposta vazio");
             }
         }
         newQuestion = { questionTitle, answers };
         questions.push(newQuestion);
     }
-    return true;
 }
 function getAllLevels() {
     levels = [];
@@ -77,18 +73,17 @@ function getAllLevels() {
         let title = firstLetterUpperCase(level.children[2].value.trim());
         let imageUrl = level.children[3].value.trim();
         let description = firstLetterUpperCase(level.children[4].value.trim());
-        if (title === "" ||
+        let isInvalid = title === "" ||
             imageUrl === "" ||
             description === "" ||
             isNaN(range.minRange) ||
-            isNaN(range.maxRange)) {
-            alert("Preencha todos os campos");
-            return false;
+            isNaN(range.maxRange);
+        if (isInvalid) {
+            throw new Error("Preencha todos os campos do nivel");
         }
         newLevel = { title, range, description, imageUrl };
         levels.push(newLevel);
     }
-    return true;
 }
 function sendToServer() {
     return __awaiter(this, void 0, void 0, function* () {

@@ -1,14 +1,15 @@
 function createQuizz(edit = false, quizzId?: string) {
-  // validação
-  if (!getAllQuestions()) return;
-  if (!getAllLevels()) return;
-
-  getAllQuestions();
-  getAllLevels();
-  if (edit) {
-    updateQuizz(quizzId as string);
-  } else {
-    sendToServer();
+  try {
+    getAllQuestions();
+    getAllLevels();
+    if (edit) {
+      updateQuizz(quizzId as string);
+    } else {
+      sendToServer();
+    }
+  } catch (error) {
+    alert(error.message);
+    console.error(error);
   }
 }
 
@@ -22,22 +23,19 @@ function addLevel() {
   renderCreateLevels();
 }
 
-function checkQuestionMark(question: string): boolean {
+function checkQuestionMark(question: string) {
   const isValidCheckMark =
     question.charAt(question.length - 1) !== "?" ||
     question.indexOf("?") !== question.length - 1;
 
   if (isValidCheckMark) {
-    alert(
+    throw new Error(
       "É obrigatorio terminar a pergunta com '?', e só se pode ter 1 pergunta por bloco de perguntas."
     );
-    return false;
   }
-
-  return true;
 }
 
-function getAllQuestions(): boolean {
+function getAllQuestions() {
   questions = [];
 
   for (let question of questionNode) {
@@ -45,7 +43,7 @@ function getAllQuestions(): boolean {
     let answers: Answer[] = [];
     let questionTitle = firstLetterUpperCase(question.children[1].value.trim());
 
-    if (!checkQuestionMark(questionTitle)) return false;
+    checkQuestionMark(questionTitle);
 
     for (let i = 2; i <= 5; i++) {
       const answer = firstLetterUpperCase(
@@ -60,19 +58,16 @@ function getAllQuestions(): boolean {
       });
 
       if (answer === "" || answerUrl === "") {
-        alert("Preencha todos os campos");
-        return false;
+        throw new Error("Campo de resposta vazio");
       }
     }
 
     newQuestion = { questionTitle, answers };
     questions.push(newQuestion);
   }
-
-  return true;
 }
 
-function getAllLevels(): boolean {
+function getAllLevels() {
   levels = [];
 
   for (let level of levelNode) {
@@ -84,23 +79,20 @@ function getAllLevels(): boolean {
     let title = firstLetterUpperCase(level.children[2].value.trim());
     let imageUrl = level.children[3].value.trim();
     let description = firstLetterUpperCase(level.children[4].value.trim());
-
-    if (
+    let isInvalid =
       title === "" ||
       imageUrl === "" ||
       description === "" ||
       isNaN(range.minRange) ||
-      isNaN(range.maxRange)
-    ) {
-      alert("Preencha todos os campos");
-      return false;
+      isNaN(range.maxRange);
+
+    if (isInvalid) {
+      throw new Error("Preencha todos os campos do nivel");
     }
 
     newLevel = { title, range, description, imageUrl };
     levels.push(newLevel);
   }
-
-  return true;
 }
 
 async function sendToServer() {
