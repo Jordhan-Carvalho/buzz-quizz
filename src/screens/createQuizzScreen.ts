@@ -201,7 +201,10 @@ async function updateQuizz(id: string, token: string) {
 // ---------------------------------RENDER FUNCTIONS------------------------------------
 
 export function renderCreateQuizz(token: string) {
-  sendButton.setAttribute("onclick", `createQuizz(false, ${token})`);
+  // sendButton.setAttribute("onclick", `createQuizz(false, ${token})`);
+  sendButton.addEventListener("click", () => {
+    createQuizz(false, token);
+  });
   sendButton.innerText = "Publicar";
   questionsContainer.innerHTML = "";
   levelsContainer.innerHTML = "";
@@ -303,10 +306,18 @@ function renderCreateLevels(singleLevel?: Level, i?: number, isEdit = false) {
 }
 
 export function renderEditQuizz(quizz: Quizz, token: string) {
-  sendButton.setAttribute(
-    "onclick",
-    `createQuizz(true, ${token} ,${quizz.id})`
-  );
+  // sendButton.setAttribute(
+  //   "onclick",
+  //   `createQuizz(true, ${token} ,${quizz.id})`
+  // );
+  // @@@@@@@@@@@@@@@@ TODO
+  // remove previous button if any
+  //create newButton
+  const sendQuizzButton = document.createElement("button");
+
+  sendButton.addEventListener("click", () => {
+    createQuizz(true, token, quizz.id);
+  });
   sendButton.innerText = "Atualizar";
   questionsContainer.innerHTML = "";
   levelsContainer.innerHTML = "";
