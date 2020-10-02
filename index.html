@@ -23,29 +23,6 @@
     <title>BuzzQuizz</title>
   </head>
   <body>
-    <!-- -------------------------------LOGIN SCREEN-------------------------------- -->
-    <section class="login-screen">
-      <h1>BuzzQuizz</h1>
-      <h3>O Quiz que você Quizzer</h3>
-      <div class="login-container">
-        <input
-          class="email-input"
-          type="email"
-          name="email"
-          placeholder="E-mail"
-        />
-        <input
-          class="password-input"
-          type="password"
-          name="password"
-          placeholder="Senha"
-        />
-        <button class="login-button" onclick="login()">Entrar</button>
-        <div class="loading-gif display-none">
-          <img src="./assets/images/loadingBtn.gif" alt="" />
-        </div>
-      </div>
-    </section>
     <main class="display-none">
       <header class="main-header display-none">
         <strong><h1>BuzzQuizz</h1></strong>
@@ -113,13 +90,14 @@
     </main>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/ionicons@5.1.2/dist/ionicons.js"></script>
-    <script src="./build/globalVariables.js"></script>
+    <script type="module" src="./dist/bundle.js"></script>
+    <!-- <script src="./build/globalVariables.js"></script>
     <script src="./build/screens/loginScreen.js"></script>
     <script src="./build/screens/quizzesScreen.js"></script>
     <script src="./build/screens/createQuizzScreen.js"></script>
     <script src="./build/screens/singleQuizzScreen.js"></script>
     <script src="./build/screens/endGameScreen.js"></script>
     <script src="./build/renderFunctions.js"></script>
-    <script src="./build/helperFunctions.js"></script>
+    <script src="./build/helperFunctions.js"></script> -->
   </body>
 </html>

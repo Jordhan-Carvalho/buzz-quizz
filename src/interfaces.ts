@@ -1,4 +1,4 @@
-interface Quizz {
+export interface Quizz {
   id?: string;
   title: string;
   data: {
@@ -8,25 +8,25 @@ interface Quizz {
   };
 }
 
-interface Level {
+export interface Level {
   title: string;
   range: { minRange: number; maxRange: number };
   imageUrl: string;
   description: string;
 }
 
-interface Question {
+export interface Question {
   questionTitle: string;
   answers: Answer[];
 }
 
-interface Answer {
+export interface Answer {
   answer: string;
   answerUrl: string;
   correct: boolean;
 }
 
-interface QuizzConfig {
+export interface QuizzConfig {
   fontColor: string;
   themeColor: string;
 }
