@@ -13,20 +13,12 @@ let levels: Level[] = [];
 let numberOfLevels = 1;
 let levelNode: HTMLElement[] = [];
 // ------------------------MODULE NODES---------------------------
-const quizzTitle = document.querySelector("#quizz-title") as HTMLInputElement;
-const sendButton = document.querySelector(".post-quizz-button") as HTMLElement;
-const questionsContainer = document.querySelector(
-  ".questions-container"
-) as HTMLElement;
-const levelsContainer = document.querySelector(
-  ".levels-container"
-) as HTMLElement;
-const fontColor = document.querySelector(
-  "#quizz-font-color"
-) as HTMLInputElement;
-const themeColor = document.querySelector(
-  "#quizz-bg-color"
-) as HTMLInputElement;
+let quizzTitle: HTMLInputElement;
+let sendButton: HTMLElement;
+let questionsContainer: HTMLElement;
+let levelsContainer: HTMLElement;
+let fontColor: HTMLInputElement;
+let themeColor: HTMLInputElement;
 
 // @TODO TESTAR USANDO EVENT LISTENER
 function createQuizz(edit = false, token: string, quizzId?: string) {
@@ -200,21 +192,119 @@ async function updateQuizz(id: string, token: string) {
 
 // ---------------------------------RENDER FUNCTIONS------------------------------------
 
-export function renderCreateQuizz(token: string) {
-  // sendButton.setAttribute("onclick", `createQuizz(false, ${token})`);
+export function renderCreateQuizz(
+  token: string,
+  createScreenContainer: HTMLElement
+) {
+  createScreenContainer.innerHTML = "";
+  renderCreateQuizzScreen(createScreenContainer);
+
   sendButton.addEventListener("click", () => {
     createQuizz(false, token);
   });
   sendButton.innerText = "Publicar";
-  questionsContainer.innerHTML = "";
-  levelsContainer.innerHTML = "";
   questionNode = [];
   levelNode = [];
-  quizzTitle.value = "";
   numberOfQuestions = 1;
   numberOfLevels = 1;
   renderCreateQuestion();
   renderCreateLevels();
+}
+
+export function renderEditQuizz(
+  quizz: Quizz,
+  token: string,
+  createScreenContainer: HTMLElement
+) {
+  createScreenContainer.innerHTML = "";
+  renderCreateQuizzScreen(createScreenContainer);
+
+  sendButton.addEventListener("click", () => {
+    createQuizz(true, token, quizz.id);
+  });
+  sendButton.innerText = "Atualizar";
+  questionNode = [];
+  levelNode = [];
+  quizzTitle.value = quizz.title;
+  fontColor.value = quizz.data.config.fontColor;
+  themeColor.value = quizz.data.config.themeColor;
+  for (let i = 0; i < quizz.data.questions.length; i++) {
+    renderCreateQuestion(quizz.data.questions[i], i + 1, true);
+  }
+  for (let i = 0; i < quizz.data.levels.length; i++) {
+    renderCreateLevels(quizz.data.levels[i], i + 1, true);
+  }
+}
+
+function renderCreateQuizzScreen(createScreenContainer: HTMLElement) {
+  createScreenContainer.innerHTML = `<input
+  class="quizz-title-input"
+  type="text"
+  id="quizz-title"
+  placeholder="Digite o título do seu quizz"
+/>
+<div class="color-picker">
+  <p>Selecione as cores do seu Quizz:</p>
+  <div>
+    <input
+      type="color"
+      id="quizz-bg-color"
+      name="head"
+      value="#6c8fb8"
+    />
+    <label for="head">Fundo</label>
+  </div>
+
+  <div>
+    <input
+      type="color"
+      id="quizz-font-color"
+      name="body"
+      value="#DDDDDD"
+    />
+    <label for="body">Fonte</label>
+  </div>
+</div>
+<div class="questions-container"></div>
+<ion-icon
+  class="add-question"
+  name="add-circle"
+></ion-icon>
+<div class="levels-container"></div>
+<ion-icon
+  class="add-level"
+  name="add-circle"
+></ion-icon>
+<button class="post-quizz-button">PUBLICAR</button>
+<div class="loading-gif-quizz display-none">
+  <img src="./assets/images/loadingBtn.gif" alt="" />
+</div>`;
+
+  createScreenContainer
+    .querySelector(".add-level")
+    .addEventListener("click", () => {
+      addLevel();
+    });
+  createScreenContainer
+    .querySelector(".add-question")
+    .addEventListener("click", () => {
+      addQuestion();
+    });
+
+  questionsContainer = createScreenContainer.querySelector(
+    ".questions-container"
+  ) as HTMLElement;
+  levelsContainer = createScreenContainer.querySelector(
+    ".levels-container"
+  ) as HTMLElement;
+  quizzTitle = createScreenContainer.querySelector(
+    "#quizz-title"
+  ) as HTMLInputElement;
+  sendButton = createScreenContainer.querySelector(
+    ".post-quizz-button"
+  ) as HTMLElement;
+  fontColor = document.querySelector("#quizz-font-color") as HTMLInputElement;
+  themeColor = document.querySelector("#quizz-bg-color") as HTMLInputElement;
 }
 
 function renderCreateQuestion(
@@ -303,33 +393,4 @@ function renderCreateLevels(singleLevel?: Level, i?: number, isEdit = false) {
   setTimeout(() => {
     levelDiv.classList.add("display-visible");
   }, 0);
-}
-
-export function renderEditQuizz(quizz: Quizz, token: string) {
-  // sendButton.setAttribute(
-  //   "onclick",
-  //   `createQuizz(true, ${token} ,${quizz.id})`
-  // );
-  // @@@@@@@@@@@@@@@@ TODO
-  // remove previous button if any
-  //create newButton
-  const sendQuizzButton = document.createElement("button");
-
-  sendButton.addEventListener("click", () => {
-    createQuizz(true, token, quizz.id);
-  });
-  sendButton.innerText = "Atualizar";
-  questionsContainer.innerHTML = "";
-  levelsContainer.innerHTML = "";
-  questionNode = [];
-  levelNode = [];
-  quizzTitle.value = quizz.title;
-  fontColor.value = quizz.data.config.fontColor;
-  themeColor.value = quizz.data.config.themeColor;
-  for (let i = 0; i < quizz.data.questions.length; i++) {
-    renderCreateQuestion(quizz.data.questions[i], i + 1, true);
-  }
-  for (let i = 0; i < quizz.data.levels.length; i++) {
-    renderCreateLevels(quizz.data.levels[i], i + 1, true);
-  }
 }

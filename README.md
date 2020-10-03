@@ -1,3 +1,5 @@
+@@@@@ WEBPACK COM TS-LOADER
+
 # BuzzQuizz
 
 BuzzQuizz é um sistema para criação e realização de quizzes inspirado nos BuzzFeed.

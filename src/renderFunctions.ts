@@ -34,6 +34,8 @@ export function renderFromLoginToQuizzes(loginToken: string) {
 }
 
 export function renderFromCreateToQuizzes() {
+  const createQuizzScreen = document.querySelector(".create-quizz-screen");
+
   renderQuizzes(token);
   createQuizzScreen?.classList.toggle("display-none");
   quizzesScreen?.classList.toggle("display-none");
@@ -41,9 +43,9 @@ export function renderFromCreateToQuizzes() {
 
 export function renderFromQuizzesToCreate(quizz?: Quizz) {
   if (quizz) {
-    renderEditQuizz(quizz, token);
+    renderEditQuizz(quizz, token, createQuizzScreen as HTMLElement);
   } else {
-    renderCreateQuizz(token);
+    renderCreateQuizz(token, createQuizzScreen as HTMLElement);
   }
   createQuizzScreen?.classList.toggle("display-none");
   quizzesScreen?.classList.toggle("display-none");
