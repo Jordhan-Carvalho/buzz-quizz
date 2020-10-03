@@ -1,5 +1,5 @@
 import { Quizz } from "../interfaces";
-import { renderFromQuizzToEndGame } from "../renderFunctions";
+import { renderFromQuizzToEndGame } from "../index";
 import { calculateScoreAndLevel } from "./endGameScreen";
 
 // --------------------MODULE STATUS-------------------------

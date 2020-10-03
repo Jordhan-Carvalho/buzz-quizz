@@ -1,8 +1,5 @@
 import { Quizz } from "../interfaces";
-import {
-  renderFromQuizzesToCreate,
-  renderFromQuizzesToQuizz,
-} from "../renderFunctions";
+import { renderFromQuizzesToCreate, renderFromQuizzesToQuizz } from "../index";
 import { isLoading } from "../helperFunctions";
 
 // ---STATUS---

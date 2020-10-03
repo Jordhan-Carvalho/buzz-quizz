@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsc -w",
-    "start": "webpack"
+    "dev": "npx webpack -w",
+    "build": "webpack"
   },
   "keywords": [],
   "author": "",

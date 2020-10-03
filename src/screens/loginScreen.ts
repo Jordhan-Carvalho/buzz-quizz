@@ -1,4 +1,4 @@
-import { renderFromLoginToQuizzes, toggleIsLoading } from "../renderFunctions";
+import { renderFromLoginToQuizzes, toggleIsLoading } from "../index";
 
 const pageBody = document.querySelector("body");
 

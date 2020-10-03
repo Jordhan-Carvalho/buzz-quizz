@@ -1,5 +1,3 @@
-@@@@@ WEBPACK COM TS-LOADER
-
 # BuzzQuizz
 
 BuzzQuizz é um sistema para criação e realização de quizzes inspirado nos BuzzFeed.
@@ -20,25 +18,26 @@ A lista de funcionalidades inclui:
 
 ## Installation
 
-Para rodar localmente basta clonar o repositório e acessar o index.html
-
-Para editar os arquivos em TS é necessário a instalação TypeScript e rodar o comando abaixo.
+Para trabalhar localmente é necessário a instalação TypeScript, ts-loader, e webpack, basta rodar o comando abaixo.
 
 ```bash
-tsc -w
+npm install
+npx webpack -w
 ```
 
 Ou pelo NodeJS
 
 ```bash
+npm install
 npm run dev
 ```
 
 ## Notes
 
-A pasta Build foi incluída no repositório com a finalidade de se trabalhar com o GitHub Pages.
-
-Backend disponibilizado pelo RespondeAí
+- O arquivo bundle.js foi incluído no repositório com a finalidade de se fazer o deploy no GitHub Pages.
+- Código modularizado usando ES modules.
+- Webpack responsável pela minificação e transpilação (usando o ts-loader) do código.
+- Backend disponibilizado pelo RespondeAí.
 
 Demo:
 https://jordhan-carvalho.github.io/buzz-quizz/

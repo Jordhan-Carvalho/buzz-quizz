@@ -1,8 +1,5 @@
 import { Question, Level, Answer, Quizz } from "../interfaces";
-import {
-  toggleIsLoadingQuizz,
-  renderFromCreateToQuizzes,
-} from "../renderFunctions";
+import { toggleIsLoadingQuizz, renderFromCreateToQuizzes } from "../index";
 import { firstLetterUpperCase } from "../helperFunctions";
 
 // -----------------------MODULE STATUS-----------------------
