@@ -1,3 +1,5 @@
+import axios from "axios";
+
 import { renderFromLoginToQuizzes, toggleIsLoading } from "../index";
 
 const pageBody = document.querySelector("body");
@@ -20,7 +22,6 @@ async function login() {
 
   try {
     toggleIsLoading();
-    //@ts-ignore
     const resp = await axios.post(
       "https://mock-api.bootcamp.respondeai.com.br/api/v1/buzzquizz/users",
       data

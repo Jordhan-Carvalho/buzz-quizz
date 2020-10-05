@@ -1,3 +1,5 @@
+import axios from "axios";
+
 import { Question, Level, Answer, Quizz } from "../interfaces";
 import { toggleIsLoadingQuizz, renderFromCreateToQuizzes } from "../index";
 import { firstLetterUpperCase } from "../helperFunctions";
@@ -138,7 +140,6 @@ async function sendToServer(token: string) {
 
   try {
     toggleIsLoadingQuizz();
-    //@ts-ignore
     await axios.post(
       "https://mock-api.bootcamp.respondeai.com.br/api/v1/buzzquizz/quizzes",
       quizzData,
@@ -172,7 +173,6 @@ async function updateQuizz(id: string, token: string) {
 
   try {
     toggleIsLoadingQuizz();
-    // @ts-ignore
     await axios.put(
       `https://mock-api.bootcamp.respondeai.com.br/api/v1/buzzquizz/quizzes/${id}`,
       quizzData,

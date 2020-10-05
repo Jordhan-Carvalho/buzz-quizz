@@ -1,16 +1,15 @@
+import axios from "axios";
+
 import { Quizz } from "../interfaces";
 import { renderFromQuizzesToCreate, renderFromQuizzesToQuizz } from "../index";
 import { isLoading } from "../helperFunctions";
 
-// ---STATUS---
-// ---NODES---
 const quizzesScreen = document.querySelector(".quizzes-screen") as HTMLElement;
 
 export async function fetchQuizzes(token: string): Promise<Quizz[]> {
   let quizzes: Quizz[] = [];
   try {
     isLoading();
-    // @ts-ignore
     const { data } = await axios.get(
       "https://mock-api.bootcamp.respondeai.com.br/api/v1/buzzquizz/quizzes",
       {
@@ -35,7 +34,6 @@ async function deleteQuizz(quizzId: string, token: string) {
   if (presp !== "SIM") return;
 
   try {
-    //@ts-ignore
     await axios.delete(
       `https://mock-api.bootcamp.respondeai.com.br/api/v1/buzzquizz/quizzes/${quizzId}`,
       {
