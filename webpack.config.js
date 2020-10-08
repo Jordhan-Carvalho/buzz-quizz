@@ -1,5 +1,6 @@
 const path = require("path");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 const commonConfig = {
   entry: "./src/index.ts",
@@ -24,6 +25,15 @@ const productionConfig = {
     filename: "bundle.[contentHash].js",
     path: path.resolve(__dirname, "docs"),
   },
+  plugins: [
+    /**
+     clean all files from docs, except assets
+     */
+    ...commonConfig.plugins,
+    new CleanWebpackPlugin({
+      cleanOnceBeforeBuildPatterns: ["**/*", "!assets/**"],
+    }),
+  ],
 };
 
 const developmentConfig = {

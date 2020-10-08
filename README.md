@@ -18,18 +18,17 @@ A lista de funcionalidades inclui:
 
 ## Installation
 
-Para trabalhar localmente é necessário a instalação TypeScript, ts-loader, e webpack, basta rodar o comando abaixo.
+Para trabalhar localmente é necessário a instalação das dependência de desenvolvimento.
 
 ```bash
 npm install
-npx webpack -w
+npm start
 ```
 
-Ou pelo NodeJS
+Construir a pasta de distribuição
 
 ```bash
-npm install
-npm run dev
+npm run build
 ```
 
 ## Notes
